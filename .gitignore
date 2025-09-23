@@ -1,0 +1,13 @@
+/fastapienv/
+__pycache__/
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+
+# IDE
+.idea/
+.vscode/
