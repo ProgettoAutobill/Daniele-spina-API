@@ -1,0 +1,482 @@
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    RobotControlRequest:
+      properties:
+        command:
+          enum:
+          - start_scan
+          - stop_scan
+          - return_to_base
+          title: Command
+          type: string
+        priority:
+          enum:
+          - alta
+          - media
+          - bassa
+          title: Priority
+          type: string
+        zone_id:
+          title: Zone Id
+          type: integer
+      required:
+      - command
+      - zone_id
+      - priority
+      title: RobotControlRequest
+      type: object
+    RobotControlResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        status:
+          title: Status
+          type: string
+      required:
+      - message
+      - status
+      title: RobotControlResponse
+      type: object
+    RobotImageRequest:
+      properties:
+        image_data:
+          title: Image Data
+          type: string
+        location:
+          title: Location
+          type: string
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        timestamp:
+          title: Timestamp
+          type: string
+      required:
+      - image_data
+      - timestamp
+      - location
+      title: RobotImageRequest
+      type: object
+    RobotImageResponse:
+      properties:
+        image_id:
+          title: Image Id
+          type: string
+        status:
+          title: Status
+          type: string
+      required:
+      - image_id
+      - status
+      title: RobotImageResponse
+      type: object
+    RobotRecognitionRequest:
+      properties:
+        image_id:
+          title: Image Id
+          type: string
+        recognition_mode:
+          enum:
+          - rapida
+          - accurata
+          title: Recognition Mode
+          type: string
+      required:
+      - image_id
+      - recognition_mode
+      title: RobotRecognitionRequest
+      type: object
+    RobotRecognizedProduct:
+      properties:
+        confidence:
+          title: Confidence
+          type: number
+        name:
+          title: Name
+          type: string
+        quantity:
+          title: Quantity
+          type: integer
+      required:
+      - name
+      - quantity
+      - confidence
+      title: RobotRecognizedProduct
+      type: object
+    RobotRecognizedResponse:
+      properties:
+        image_id:
+          title: Image Id
+          type: string
+        recognized_products:
+          items:
+            $ref: '#/components/schemas/RobotRecognizedProduct'
+          title: Recognized Products
+          type: array
+      required:
+      - image_id
+      - recognized_products
+      title: RobotRecognizedResponse
+      type: object
+    RobotScheduleRequest:
+      properties:
+        priority_zones:
+          items:
+            type: integer
+          title: Priority Zones
+          type: array
+        schedule:
+          items:
+            $ref: '#/components/schemas/RobotScheduleScanItem'
+          title: Schedule
+          type: array
+      required:
+      - schedule
+      - priority_zones
+      title: RobotScheduleRequest
+      type: object
+    RobotScheduleResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        scheduled_scans:
+          items:
+            $ref: '#/components/schemas/RobotScheduleScan'
+          title: Scheduled Scans
+          type: array
+      required:
+      - message
+      - scheduled_scans
+      title: RobotScheduleResponse
+      type: object
+    RobotScheduleScan:
+      properties:
+        priority:
+          title: Priority
+          type: string
+        start_time:
+          title: Start Time
+          type: string
+        zone_id:
+          title: Zone Id
+          type: integer
+      required:
+      - zone_id
+      - start_time
+      - priority
+      title: RobotScheduleScan
+      type: object
+    RobotScheduleScanItem:
+      properties:
+        start_time:
+          title: Start Time
+          type: string
+        zone_id:
+          title: Zone Id
+          type: integer
+      required:
+      - zone_id
+      - start_time
+      title: RobotScheduleScanItem
+      type: object
+    RobotStatusResponse:
+      properties:
+        battery_level:
+          title: Battery Level
+          type: number
+        current_activity:
+          title: Current Activity
+          type: string
+        position:
+          title: Position
+          type: string
+        robot_status:
+          title: Robot Status
+          type: string
+      required:
+      - robot_status
+      - position
+      - battery_level
+      - current_activity
+      title: RobotStatusResponse
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+info:
+  title: FastAPI
+  version: 0.1.0
+openapi: 3.1.0
+paths:
+  /cashflow/:
+    get:
+      operationId: first_cashflow_api_cashflow__get
+      responses:
+        '204':
+          description: Successful Response
+      summary: First Cashflow Api
+      tags:
+      - cashflow
+  /dashboard/:
+    get:
+      operationId: first_dashboard_api_dashboard__get
+      responses:
+        '204':
+          description: Successful Response
+      summary: First Dashboard Api
+      tags:
+      - dashboard
+  /erp/:
+    get:
+      operationId: first_erp_api_erp__get
+      responses:
+        '204':
+          description: Successful Response
+      summary: First Erp Api
+      tags:
+      - erp
+  /integration/:
+    get:
+      operationId: first_integration_api_integration__get
+      responses:
+        '204':
+          description: Successful Response
+      summary: First Integration Api
+      tags:
+      - integration
+  /pos/:
+    get:
+      operationId: first_pos_api_pos__get
+      responses:
+        '204':
+          description: Successful Response
+      summary: First Pos Api
+      tags:
+      - pos
+  /robot/control:
+    post:
+      description: 'Invia comandi di controllo al robot
+
+
+        ### Parametri:
+
+        - **command**: Tipo di comando (start_scan, stop_scan, return_to_base)
+
+        - **zone_id**: ID della zona da scansionare
+
+        - **priority**: Priorità del comando (alta, media, bassa)
+
+
+        ### Risposta:
+
+        Conferma di ricezione del comando e stato del robot'
+      operationId: control_robot_control_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotControlRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotControlResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Invia comandi di controllo al robot
+      tags:
+      - robot
+  /robot/images:
+    post:
+      description: 'Riceve le immagini catturate dalla telecamera del robot
+
+
+        ### Parametri:
+
+        - **image_data**: Dati dell''immagine (base64 o URL)
+
+        - **timestamp**: Data e ora dell''acquisizione
+
+        - **location**: Posizione del robot al momento dell''acquisizione
+
+        - **metadata**: Metadati aggiuntivi (risoluzione, formato, ecc.)
+
+
+        ### Risposta:
+
+        ID dell''immagine e stato dell''elaborazione'
+      operationId: images_robot_images_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotImageRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotImageResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Riceve le immagini catturate dalla telecamera del robot
+      tags:
+      - robot
+  /robot/recognition:
+    post:
+      description: 'Elabora le immagini per riconoscere i prodotti
+
+
+        ### Parametri:
+
+        - **image_id**: ID dell''immagine da elaborare
+
+        - **recognition_mode**: Modalità di riconoscimento (rapida, accurata)
+
+
+        ### Risposta:
+
+        Lista dei prodotti riconosciuti con quantità e livello di confidenza'
+      operationId: recognition_robot_recognition_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotRecognitionRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotRecognizedResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Elabora le immagini per riconoscere i prodotti
+      tags:
+      - robot
+  /robot/schedule:
+    put:
+      description: 'Configura la pianificazione delle scansioni automatiche
+
+
+        ### Parametri:
+
+        - **schedule**: Array di oggetti con orari e zone da scansionare
+
+        - **priority_zones**: Zone con priorità di scansione più alta
+
+
+        ### Risposta:
+
+        Conferma della pianificazione con prossime scansioni programmate'
+      operationId: schedule_robot_schedule_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotScheduleRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotScheduleResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Configura la pianificazione delle scansioni automatiche
+      tags:
+      - robot
+  /robot/status:
+    get:
+      description: 'Ottiene lo stato attuale del robot
+
+
+        ### Parametri:
+
+        - **details_level**: Livello di dettaglio (base, completo)
+
+
+        ### Risposta:
+
+        Stato del robot, posizione, livello batteria, attività corrente'
+      operationId: get_status_robot_status_get
+      parameters:
+      - in: query
+        name: details_level
+        required: true
+        schema:
+          title: Details Level
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotStatusResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Ottiene lo stato attuale del robot
+      tags:
+      - robot

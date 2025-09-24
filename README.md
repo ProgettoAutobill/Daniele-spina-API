@@ -59,6 +59,15 @@ python app.py
 python src/repository/testRepository.py
 ```
 
+
+### 4. Per scaricare lo swagger (opzionale)
+```bash
+# Apri il terminale e fai run del progetto
+python src/repository/testRepository.py
+# Apri un altro terminale e lancia il seguente comando
+python export_swagger.py
+```
+
 ## Funzionalità principali
 
 ### Gestione Backend Integrata

@@ -5,9 +5,10 @@ from metadata.robot_docs import robot_control_params, robot_control_response, ro
     robot_images_params, robot_images_response, robot_recognition_desc, robot_status_desc, robot_schedule_desc, \
     robot_recognition_response, robot_status_response, robot_schedule_response, robot_recognition_params, \
     robot_status_params, robot_schedule_params
-from schemas.robot import RobotControlResponse, RobotControlRequest, RobotImageRequest, RobotImageResponse, \
-    RobotRecognitionRequest, RobotRecognizedResponse, RobotRecognizedProduct, RobotStatusResponse, \
-    RobotScheduleResponse, RobotScheduleScan, RobotScheduleRequest
+from schemas.request.robotRequest import RobotControlRequest, RobotImageRequest, RobotRecognitionRequest, \
+    RobotScheduleRequest
+from schemas.response.robotResponse import RobotControlResponse, RobotImageResponse, RobotRecognizedResponse, \
+    RobotRecognizedProduct, RobotStatusResponse, RobotScheduleResponse, RobotScheduleScan
 
 router = APIRouter(
     prefix="/robot",
