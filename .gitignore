@@ -1,4 +1,6 @@
 /fastapienv/
+venv/
+myenv/
 __pycache__/
 
 # Python

@@ -33,8 +33,8 @@ done
 
 echo "PostgreSQL is ready!"
 
-# echo "Creating database tables..."
-# "$VENV_PATH/bin/python" src/database/sessionDB.py
+echo "Creating database tables..."
+"$VENV_PATH/bin/python" src/database/sessionDB.py
 
 echo "Database setup complete!"
 echo "PostgreSQL is running on localhost:5432"
