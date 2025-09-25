@@ -8,11 +8,12 @@ from metadata.erpDocs import erp_connect_desc, erp_connect_params, erp_connect_r
     erp_accounting_params, erp_accounting_response, erp_import_inventory_desc, erp_import_inventory_params, \
     erp_import_inventory_response, erp_sync_desc, erp_sync_params, erp_sync_response, erp_mapping_desc, \
     erp_mapping_params, erp_mapping_response, erp_import_entities_desc, erp_import_entities_params, \
-    erp_import_entities_response
+    erp_import_entities_response, erp_sync_status_desc, erp_sync_status_params, erp_sync_status_response
 from schemas.request.erpRequest import ErpConnectRequest, ErpSyncRequest, ErpMappingRequest
 from schemas.response.erpResponse import ErpConnectResponse, ErpAccountingImportResponse, \
     ErpAccountingRecord, ErpInventoryImportResponse, ErpInventoryRecord, ErpSyncResponse, ErpModuleSyncResult, \
-    ErpMappingResponse, ErpEntityImportResponse, ErpEntityRecord
+    ErpMappingResponse, ErpEntityImportResponse, ErpEntityRecord, ErpSyncStatusRecord, ErpSyncLogEntry, \
+    ErpSyncStatusResponse
 
 router = APIRouter(
     prefix="/erp",
@@ -189,4 +190,63 @@ async def import_entities(
         totalOutstanding=total_outstanding,
         message=f"Importati {len(filtered_entities)} record di tipo {entity_type}."
     )
+    return response
+
+
+
+@router.get(
+    "/sync/status",
+    response_model=ErpSyncStatusResponse,
+    status_code=status.HTTP_200_OK,
+    **api_docs(erp_sync_status_desc, erp_sync_status_params, erp_sync_status_response)
+)
+async def monitor_sync_status(
+        sync_id: Optional[str] = Query(None, description="ID della sincronizzazione (opzionale)", alias="syncId"),
+        status_filter: Optional[str] = Query(None, alias="status",
+                                             description="Filtra per stato (in corso, completato, fallito)")
+):
+    # Dati mockati
+    mock_syncs = [
+        ErpSyncStatusRecord(
+            syncId="SYNC001",
+            status="completato",
+            startedAt="2025-09-25T10:00:00",
+            completedAt="2025-09-25T10:05:00",
+            logs=[
+                ErpSyncLogEntry(timestamp="2025-09-25T10:01:00", message="Inizio import fatture"),
+                ErpSyncLogEntry(timestamp="2025-09-25T10:03:00", message="Import ordini completato"),
+            ]
+        ),
+        ErpSyncStatusRecord(
+            syncId="SYNC002",
+            status="in corso",
+            startedAt="2025-09-25T11:00:00",
+            logs=[
+                ErpSyncLogEntry(timestamp="2025-09-25T11:01:00", message="Avvio sincronizzazione inventario")
+            ]
+        ),
+        ErpSyncStatusRecord(
+            syncId="SYNC003",
+            status="fallito",
+            startedAt="2025-09-25T09:00:00",
+            completedAt="2025-09-25T09:02:00",
+            logs=[
+                ErpSyncLogEntry(timestamp="2025-09-25T09:01:00", message="Errore connessione ERP")
+            ]
+        )
+    ]
+
+    # Filtra per sync_id e status
+    filtered_syncs = [
+        record for record in mock_syncs
+        if (sync_id is None or record.syncId == sync_id) and
+           (status_filter is None or record.status == status_filter)
+    ]
+
+    response = ErpSyncStatusResponse(
+        syncRecords=filtered_syncs,
+        totalRecords=len(filtered_syncs),
+        message=f"Trovati {len(filtered_syncs)} record di sincronizzazione."
+    )
+
     return response

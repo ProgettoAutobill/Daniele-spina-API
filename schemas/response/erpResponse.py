@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 
 class ErpConnectResponse(BaseModel):
@@ -67,3 +67,21 @@ class ErpEntityImportResponse(BaseModel):
     totalOutstanding: float = Field(..., alias="totalOutstanding")
     message: str
 
+
+class ErpSyncLogEntry(BaseModel):
+    timestamp: str
+    message: str
+
+
+class ErpSyncStatusRecord(BaseModel):
+    syncId: str
+    status: str
+    startedAt: str
+    completedAt: Optional[str] = None
+    logs: List[ErpSyncLogEntry]
+
+
+class ErpSyncStatusResponse(BaseModel):
+    syncRecords: List[ErpSyncStatusRecord] = Field(..., alias="syncRecords")
+    totalRecords: int = Field(..., alias="totalRecords")
+    message: str
