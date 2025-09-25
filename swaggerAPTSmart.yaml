@@ -1001,7 +1001,7 @@ info:
   version: 1.0.0
 openapi: 3.0.3
 paths:
-  /cashflow/accountingDdata:
+  /api/cashflow/accountingDdata:
     post:
       description: 'Aggiorna i dati contabili interni
 
@@ -1016,7 +1016,7 @@ paths:
         ### Risposta:
 
         Conferma di aggiornamento con statistiche'
-      operationId: update_accounting_data_cashflow_accountingDdata_post
+      operationId: update_accounting_data_api_cashflow_accountingDdata_post
       requestBody:
         content:
           application/json:
@@ -1039,7 +1039,7 @@ paths:
       summary: Aggiorna i dati contabili interni
       tags:
       - cashflow
-  /cashflow/crunchDetection:
+  /api/cashflow/crunchDetection:
     get:
       description: 'Identifica potenziali crisi di liquidità
 
@@ -1054,7 +1054,7 @@ paths:
         ### Risposta:
 
         Dettagli sulle potenziali crisi di liquidità con date e probabilità'
-      operationId: get_crunch_detection_cashflow_crunchDetection_get
+      operationId: get_crunch_detection_api_cashflow_crunchDetection_get
       parameters:
       - description: Soglia minima di confidenza
         in: query
@@ -1092,7 +1092,7 @@ paths:
       summary: Identifica potenziali crisi di liquidità
       tags:
       - cashflow
-  /dashboard/unified:
+  /api/dashboard/unified:
     get:
       description: 'Fornisce dati aggregati da tutte le fonti per la dashboard
 
@@ -1109,7 +1109,7 @@ paths:
         ### Risposta:
 
         Dati aggregati per la visualizzazione nella dashboard unificata'
-      operationId: unified_dashboard_dashboard_unified_get
+      operationId: unified_dashboard_api_dashboard_unified_get
       parameters:
       - description: Array di fonti dati da includere (es. robot, pos, erp)
         in: query
@@ -1153,7 +1153,7 @@ paths:
       summary: Fornisce dati aggregati da tutte le fonti per la dashboard
       tags:
       - dashboard
-  /erp/connect:
+  /api/erp/connect:
     post:
       description: 'Stabilisce una connessione con il gestionale aziendale
 
@@ -1170,7 +1170,7 @@ paths:
         ### Risposta:
 
         Stato della connessione e token di autenticazione'
-      operationId: connect_erp_connect_post
+      operationId: connect_api_erp_connect_post
       requestBody:
         content:
           application/json:
@@ -1193,7 +1193,7 @@ paths:
       summary: Stabilisce una connessione con il gestionale aziendale
       tags:
       - erp
-  /erp/import/accounting:
+  /api/erp/import/accounting:
     get:
       description: 'Importa dati contabili dal gestionale
 
@@ -1210,7 +1210,7 @@ paths:
         ### Risposta:
 
         Dati contabili importati e statistiche di sincronizzazione'
-      operationId: import_accounting_data_erp_import_accounting_get
+      operationId: import_accounting_data_api_erp_import_accounting_get
       parameters:
       - description: Tipo di dati (fatture, ordini, pagamenti)
         in: query
@@ -1252,7 +1252,7 @@ paths:
       summary: Importa dati contabili dal gestionale
       tags:
       - erp
-  /erp/import/entities:
+  /api/erp/import/entities:
     get:
       description: 'Importa dati su clienti e fornitori dal gestionale
 
@@ -1267,7 +1267,7 @@ paths:
         ### Risposta:
 
         Dati delle entità importate con statistiche di pagamento'
-      operationId: import_entities_erp_import_entities_get
+      operationId: import_entities_api_erp_import_entities_get
       parameters:
       - description: Tipo di entità (cliente, fornitore)
         in: query
@@ -1302,7 +1302,7 @@ paths:
       summary: Importa dati su clienti e fornitori dal gestionale
       tags:
       - erp
-  /erp/import/inventory:
+  /api/erp/import/inventory:
     get:
       description: 'Importa dati di inventario dal gestionale
 
@@ -1317,7 +1317,7 @@ paths:
         ### Risposta:
 
         Dati di inventario importati e statistiche'
-      operationId: import_inventory_data_erp_import_inventory_get
+      operationId: import_inventory_data_api_erp_import_inventory_get
       parameters:
       - description: ID del magazzino (opzionale)
         in: query
@@ -1353,7 +1353,7 @@ paths:
       summary: Importa dati di inventario dal gestionale
       tags:
       - erp
-  /erp/mapping:
+  /api/erp/mapping:
     put:
       description: 'Configura la mappatura tra i campi del gestionale e quelli del
         sistema
@@ -1371,7 +1371,7 @@ paths:
         ### Risposta:
 
         Stato della configurazione della mappatura'
-      operationId: configure_mapping_erp_mapping_put
+      operationId: configure_mapping_api_erp_mapping_put
       requestBody:
         content:
           application/json:
@@ -1394,7 +1394,7 @@ paths:
       summary: Configura la mappatura tra i campi del gestionale e quelli del sistema
       tags:
       - erp
-  /erp/sync:
+  /api/erp/sync:
     post:
       description: 'Sincronizza i dati tra il sistema di previsione e il gestionale
 
@@ -1409,7 +1409,7 @@ paths:
         ### Risposta:
 
         Risultati della sincronizzazione con dettagli per ogni modulo'
-      operationId: sync_data_erp_sync_post
+      operationId: sync_data_api_erp_sync_post
       requestBody:
         content:
           application/json:
@@ -1432,7 +1432,7 @@ paths:
       summary: Sincronizza i dati tra il sistema di previsione e il gestionale
       tags:
       - erp
-  /erp/sync/status:
+  /api/erp/sync/status:
     get:
       description: 'Monitora lo stato delle sincronizzazioni con i gestionali
 
@@ -1447,7 +1447,7 @@ paths:
         ### Risposta:
 
         Stato dettagliato delle sincronizzazioni con timestamp e log'
-      operationId: monitor_sync_status_erp_sync_status_get
+      operationId: monitor_sync_status_api_erp_sync_status_get
       parameters:
       - description: ID della sincronizzazione (opzionale)
         in: query
@@ -1483,7 +1483,7 @@ paths:
       summary: Monitora lo stato delle sincronizzazioni con i gestionali
       tags:
       - erp
-  /integration/correlate:
+  /api/integration/correlate:
     post:
       description: 'Correla i dati provenienti da robot, POS e gestionali
 
@@ -1499,7 +1499,7 @@ paths:
         ### Risposta:
 
         Risultati della correlazione con insights'
-      operationId: correlate_data_integration_correlate_post
+      operationId: correlate_data_api_integration_correlate_post
       requestBody:
         content:
           application/json:
@@ -1522,7 +1522,7 @@ paths:
       summary: Correla i dati provenienti da robot, POS e gestionali
       tags:
       - integration
-  /integration/inventoryImpact:
+  /api/integration/inventoryImpact:
     get:
       description: 'Calcola l''impatto dell''inventario attuale sul flusso di cassa
 
@@ -1535,7 +1535,7 @@ paths:
         ### Risposta:
 
         Analisi dell''impatto dell''inventario sul flusso di cassa'
-      operationId: inventory_impact_integration_inventoryImpact_get
+      operationId: inventory_impact_api_integration_inventoryImpact_get
       parameters:
       - description: Periodo di analisi in giorni
         in: query
@@ -1561,7 +1561,7 @@ paths:
       summary: Calcola l'impatto dell'inventario attuale sul flusso di cassa
       tags:
       - integration
-  /integration/inventoryOptimization:
+  /api/integration/inventoryOptimization:
     get:
       description: 'Suggerisce ottimizzazioni dell''inventario basate sulle previsioni
         di flusso di cassa
@@ -1577,7 +1577,7 @@ paths:
         ### Risposta:
 
         Raccomandazioni per l''ottimizzazione delle scorte'
-      operationId: inventory_optimization_integration_inventoryOptimization_get
+      operationId: inventory_optimization_api_integration_inventoryOptimization_get
       parameters:
       - description: Vincolo di liquidità disponibile
         in: query
@@ -1612,7 +1612,7 @@ paths:
         flusso di cassa
       tags:
       - integration
-  /pos/connect:
+  /api/pos/connect:
     post:
       description: 'Stabilisce una connessione con il sistema POS
 
@@ -1629,7 +1629,7 @@ paths:
         ### Risposta:
 
         Stato della connessione e token di autenticazione'
-      operationId: connect_pos_pos_connect_post
+      operationId: connect_pos_api_pos_connect_post
       requestBody:
         content:
           application/json:
@@ -1652,7 +1652,7 @@ paths:
       summary: Stabilisce una connessione con il sistema POS
       tags:
       - pos
-  /pos/products/sync:
+  /api/pos/products/sync:
     post:
       description: 'Sincronizza i dati dei prodotti tra il sistema e il POS
 
@@ -1667,7 +1667,7 @@ paths:
         ### Risposta:
 
         Risultati della sincronizzazione con dettagli'
-      operationId: sync_products_pos_products_sync_post
+      operationId: sync_products_api_pos_products_sync_post
       requestBody:
         content:
           application/json:
@@ -1690,7 +1690,7 @@ paths:
       summary: Sincronizza i dati dei prodotti tra il sistema e il POS
       tags:
       - pos
-  /pos/sales/analysis:
+  /api/pos/sales/analysis:
     get:
       description: 'Ottiene analisi delle vendite dal sistema POS
 
@@ -1707,7 +1707,7 @@ paths:
         ### Risposta:
 
         Dati di analisi delle vendite con trend e statistiche'
-      operationId: analyze_sales_pos_sales_analysis_get
+      operationId: analyze_sales_api_pos_sales_analysis_get
       parameters:
       - description: Periodo di analisi (giornaliero, settimanale, mensile)
         in: query
@@ -1751,7 +1751,7 @@ paths:
       summary: Ottiene analisi delle vendite dal sistema POS
       tags:
       - pos
-  /pos/transactions:
+  /api/pos/transactions:
     get:
       description: 'Importa le transazioni dal sistema POS
 
@@ -1768,7 +1768,7 @@ paths:
         ### Risposta:
 
         Dati delle transazioni importate con statistiche'
-      operationId: import_transactions_pos_transactions_get
+      operationId: import_transactions_api_pos_transactions_get
       parameters:
       - description: Data di inizio periodo
         in: query
@@ -1811,7 +1811,7 @@ paths:
       summary: Importa le transazioni dal sistema POS
       tags:
       - pos
-  /robot/control:
+  /api/robot/control:
     post:
       description: 'Invia comandi di controllo al robot
 
@@ -1828,7 +1828,7 @@ paths:
         ### Risposta:
 
         Conferma di ricezione del comando e stato del robot'
-      operationId: control_robot_control_post
+      operationId: control_api_robot_control_post
       requestBody:
         content:
           application/json:
@@ -1851,7 +1851,7 @@ paths:
       summary: Invia comandi di controllo al robot
       tags:
       - robot
-  /robot/images:
+  /api/robot/images:
     post:
       description: 'Riceve le immagini catturate dalla telecamera del robot
 
@@ -1870,7 +1870,7 @@ paths:
         ### Risposta:
 
         ID dell''immagine e stato dell''elaborazione'
-      operationId: images_robot_images_post
+      operationId: images_api_robot_images_post
       requestBody:
         content:
           application/json:
@@ -1893,7 +1893,7 @@ paths:
       summary: Riceve le immagini catturate dalla telecamera del robot
       tags:
       - robot
-  /robot/recognition:
+  /api/robot/recognition:
     post:
       description: 'Elabora le immagini per riconoscere i prodotti
 
@@ -1908,7 +1908,7 @@ paths:
         ### Risposta:
 
         Lista dei prodotti riconosciuti con quantità e livello di confidenza'
-      operationId: recognition_robot_recognition_post
+      operationId: recognition_api_robot_recognition_post
       requestBody:
         content:
           application/json:
@@ -1931,7 +1931,7 @@ paths:
       summary: Elabora le immagini per riconoscere i prodotti
       tags:
       - robot
-  /robot/schedule:
+  /api/robot/schedule:
     put:
       description: 'Configura la pianificazione delle scansioni automatiche
 
@@ -1946,7 +1946,7 @@ paths:
         ### Risposta:
 
         Conferma della pianificazione con prossime scansioni programmate'
-      operationId: schedule_robot_schedule_put
+      operationId: schedule_api_robot_schedule_put
       requestBody:
         content:
           application/json:
@@ -1969,7 +1969,7 @@ paths:
       summary: Configura la pianificazione delle scansioni automatiche
       tags:
       - robot
-  /robot/status:
+  /api/robot/status:
     get:
       description: 'Ottiene lo stato attuale del robot
 
@@ -1982,7 +1982,7 @@ paths:
         ### Risposta:
 
         Stato del robot, posizione, livello batteria, attività corrente'
-      operationId: get_status_robot_status_get
+      operationId: get_status_api_robot_status_get
       parameters:
       - in: query
         name: detailsLevel
