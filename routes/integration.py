@@ -3,10 +3,12 @@ from starlette import status
 from metadata.apiDocs import api_docs
 from metadata.integrationDocs import integration_correlate_desc, integration_correlate_params, \
     integration_correlate_response, integration_inventory_impact_desc, integration_inventory_impact_params, \
-    integration_inventory_optimization_response
+    integration_inventory_optimization_response, integration_inventory_optimization_desc, \
+    integration_inventory_optimization_params, integration_inventory_impact_response
 from schemas.request.integrationRequest import IntegrationCorrelationRequest
 from schemas.response.integrationResponse import IntegrationCorrelationResponse, IntegrationCorrelationResult, \
-    IntegrationInventoryImpactEntry, IntegrationInventoryImpactResponse
+    IntegrationInventoryImpactEntry, IntegrationInventoryImpactResponse, IntegrationInventoryOptimizationEntry, \
+    IntegrationInventoryOptimizationResponse
 
 router = APIRouter(
     prefix="/integration",
@@ -44,7 +46,7 @@ async def correlate_data(request: IntegrationCorrelationRequest):
     "/inventoryImpact",
     response_model= IntegrationInventoryImpactResponse,
     status_code=status.HTTP_200_OK,
-    **api_docs(integration_inventory_impact_desc, integration_inventory_impact_params, integration_inventory_optimization_response)
+    **api_docs(integration_inventory_impact_desc, integration_inventory_impact_params, integration_inventory_impact_response)
 )
 async def inventory_impact(
         timeframe: int = Query(..., description="Periodo di analisi in giorni")
@@ -67,4 +69,48 @@ async def inventory_impact(
         message=f"Analisi completata per un periodo di {timeframe} giorni."
     )
 
+    return response
+
+
+@router.get(
+    "/inventoryOptimization",
+    response_model=IntegrationInventoryOptimizationResponse,
+    status_code=status.HTTP_200_OK,
+    **api_docs(integration_inventory_optimization_desc, integration_inventory_optimization_params, integration_inventory_optimization_response)
+)
+async def inventory_optimization(
+    cash_constraint: float = Query(..., description="Vincolo di liquidità disponibile"),
+    priority: str = Query(..., description="Priorità dell'ottimizzazione (liquidità, vendite, margine)")
+):
+    # Dati mockati
+    mock_recommendations = [
+        IntegrationInventoryOptimizationEntry(
+            category="bevande",
+            currentStock=500,
+            recommendedStock=350,
+            expectedImpact=+1200.0,
+            rationale="Riduzione scorte per liberare liquidità in linea con la priorità"
+        ),
+        IntegrationInventoryOptimizationEntry(
+            category="alimentari",
+            currentStock=800,
+            recommendedStock=900,
+            expectedImpact=+2000.0,
+            rationale="Aumento scorte per coprire la domanda prevista e migliorare vendite"
+        ),
+        IntegrationInventoryOptimizationEntry(
+            category="pulizia",
+            currentStock=300,
+            recommendedStock=250,
+            expectedImpact=+500.0,
+            rationale="Riduzione scorte in eccesso con basso margine"
+        ),
+    ]
+
+    response = IntegrationInventoryOptimizationResponse(
+        cashConstraint=cash_constraint,
+        priority=priority,
+        recommendations=mock_recommendations,
+        message=f"Raccomandazioni generate in base a vincolo di liquidità {cash_constraint} e priorità '{priority}'."
+    )
     return response

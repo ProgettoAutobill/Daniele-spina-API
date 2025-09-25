@@ -26,3 +26,18 @@ class IntegrationInventoryImpactResponse(BaseModel):
     totalCashFlowImpact: float
     details: List[IntegrationInventoryImpactEntry]
     message: str
+
+
+class IntegrationInventoryOptimizationEntry(BaseModel):
+    category: str
+    currentStock: int
+    recommendedStock: int
+    expectedImpact: float
+    rationale: str
+
+
+class IntegrationInventoryOptimizationResponse(BaseModel):
+    cashConstraint: float
+    priority: str
+    recommendations: List[IntegrationInventoryOptimizationEntry]
+    message: str
