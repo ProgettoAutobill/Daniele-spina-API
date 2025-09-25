@@ -22,3 +22,15 @@ class PosTransactionImportResponse(BaseModel):
     totalAmount: float = Field(..., alias="totalAmount")
     message: str
 
+
+class PosProductSyncResult(BaseModel):
+    categoryName: str
+    status: str
+    productsSynced: int
+
+
+class PosProductSyncResponse(BaseModel):
+    results: List[PosProductSyncResult] = Field(..., alias="results")
+    totalCategories: int = Field(..., alias="totalCategories")
+    message: str
+

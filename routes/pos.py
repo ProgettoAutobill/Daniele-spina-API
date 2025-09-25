@@ -4,9 +4,11 @@ from starlette import status
 
 from metadata.apiDocs import api_docs
 from metadata.posDocs import pos_connect_params, pos_connect_desc, pos_connect_response, pos_transactions_desc, \
-    pos_transactions_params, pos_transactions_response
-from schemas.request.posRequest import PosConnectRequest
-from schemas.response.posResponse import PosConnectResponse, PosTransactionImportResponse, PosTransactionRecord
+    pos_transactions_params, pos_transactions_response, pos_products_sync_desc, pos_products_sync_params, \
+    pos_products_sync_response
+from schemas.request.posRequest import PosConnectRequest, PosProductSyncRequest
+from schemas.response.posResponse import PosConnectResponse, PosTransactionImportResponse, PosTransactionRecord, \
+    PosProductSyncResponse, PosProductSyncResult
 
 router = APIRouter(
     prefix="/pos",
@@ -76,3 +78,26 @@ async def import_transactions(
     )
     return response
 
+
+@router.post(
+    "/products/sync",
+    response_model=PosProductSyncResponse,
+    status_code=status.HTTP_200_OK,
+    ** api_docs(pos_products_sync_desc, pos_products_sync_params, pos_products_sync_response)
+)
+async def sync_products(request: PosProductSyncRequest):
+    # Dati mockati
+    mock_results = [
+        PosProductSyncResult(
+            categoryName=category,
+            status="success",
+            productsSynced=10
+        ) for category in request.productCategories
+    ]
+
+    response = PosProductSyncResponse(
+        results=mock_results,
+        totalCategories=len(request.productCategories),
+        message=f"Sincronizzate {len(request.productCategories)} categorie di prodotti in {request.syncDirection} mode."
+    )
+    return response
