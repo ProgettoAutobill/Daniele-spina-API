@@ -11,7 +11,7 @@ from schemas.response.posResponse import PosConnectResponse, PosTransactionImpor
     PosProductSyncResponse, PosProductSyncResult, PosSalesTrendEntry, PosSalesAnalysisResponse
 
 router = APIRouter(
-    prefix="/pos",
+    prefix="/api/pos",
     tags=["pos"]
 )
 

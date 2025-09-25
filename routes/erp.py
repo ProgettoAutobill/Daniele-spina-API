@@ -16,7 +16,7 @@ from schemas.response.erpResponse import ErpConnectResponse, ErpAccountingImport
     ErpSyncStatusResponse
 
 router = APIRouter(
-    prefix="/erp",
+    prefix="/api/erp",
     tags=["erp"]
 )
 

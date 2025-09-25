@@ -11,7 +11,7 @@ from schemas.response.robotResponse import RobotControlResponse, RobotImageRespo
     RobotRecognizedProduct, RobotStatusResponse, RobotScheduleResponse, RobotScheduleScan
 
 router = APIRouter(
-    prefix="/robot",
+    prefix="/api/robot",
     tags=["robot"]
 )
 

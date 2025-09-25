@@ -13,7 +13,7 @@ from schemas.response.cashflowResponse import CrunchDetectionResponse, CrunchDet
     AccountingDataResponse
 
 router = APIRouter(
-    prefix="/cashflow",
+    prefix="/api/cashflow",
     tags=["cashflow"]
 )
 

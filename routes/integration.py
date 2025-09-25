@@ -11,7 +11,7 @@ from schemas.response.integrationResponse import IntegrationCorrelationResponse,
     IntegrationInventoryOptimizationResponse
 
 router = APIRouter(
-    prefix="/integration",
+    prefix="/api/integration",
     tags=["integration"]
 )
 

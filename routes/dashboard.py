@@ -7,7 +7,7 @@ from metadata.dashboardDocs import dashboard_unified_desc, dashboard_unified_par
 from schemas.response.dashboardResponse import DashboardUnifiedResponse
 
 router = APIRouter(
-    prefix="/dashboard",
+    prefix="/api/dashboard",
     tags=["dashboard"]
 )
 
