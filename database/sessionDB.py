@@ -1,8 +1,17 @@
 from sqlalchemy import create_engine, inspect , text
 from sqlalchemy.orm import sessionmaker, Session
-from models import AuthLog, AuthorizedScript, AuthToken, Base, BusinessCost, BusinessRevenue, Client, CounterDepartment, Employee, EmployeeContract, FinancialCategory, Location, LoyaltyCard, Product, Provider, Role, StockMovement, StockMovementItem, SupermarketDepartment, User, UserPermission
+import sys
+import os
 
-DATABASE_URL = "sqlite:///./dbsmartapi.db"
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from models import (
+    Base, BusinessCost, BusinessRevenue, Client, CounterDepartment, Employee,
+    EmployeeContract, FinancialCategory, KeycloakSession, Location, LoyaltyCard,
+    Product, Provider, Role, StockMovement, StockMovementItem, SupermarketDepartment,
+    User, UserPermission
+)
+
+DATABASE_URL = "sqlite:///./database/database.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

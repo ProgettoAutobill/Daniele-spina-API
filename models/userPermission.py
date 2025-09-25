@@ -11,11 +11,6 @@ class UserPermission(Base):
     permission_description: Mapped[str] = mapped_column(String(255), default="")
     required_role_level: Mapped[int] = mapped_column(Integer, default=0)
 
-    __table_args__ = (
-        CheckConstraint("permission_name GLOB '*.*'", name="permission_name_format_check"),
-    )
-
-    def __repr__(self) -> str:
-        return f"<UserPermission(name='{self.permission_name}', required_level={self.required_role_level})>"
 
 Index("idx_user_permissions_name", UserPermission.permission_name)
+Index("idx_user_permissions_level", UserPermission.required_role_level)
