@@ -1,5 +1,436 @@
 components:
   schemas:
+    AccountingDataRequest:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/AccountingRecord'
+          title: Data
+          type: array
+        dataType:
+          title: Datatype
+          type: string
+      required:
+      - dataType
+      - data
+      title: AccountingDataRequest
+      type: object
+    AccountingDataResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        totalAmount:
+          title: Totalamount
+          type: number
+        updatedCount:
+          title: Updatedcount
+          type: integer
+      required:
+      - updatedCount
+      - totalAmount
+      - message
+      title: AccountingDataResponse
+      type: object
+    AccountingRecord:
+      properties:
+        amount:
+          title: Amount
+          type: number
+        date:
+          title: Date
+          type: string
+        description:
+          title: Description
+          type: string
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      - amount
+      - date
+      - description
+      title: AccountingRecord
+      type: object
+    CrunchDetectionLiquidityCrisis:
+      properties:
+        liquidityCrisis:
+          description: Data prevista della crisi di liquidità
+          format: date
+          title: Liquiditycrisis
+          type: string
+        probability:
+          description: Probabilità stimata
+          maximum: 1.0
+          minimum: 0.0
+          title: Probability
+          type: number
+      required:
+      - liquidityCrisis
+      - probability
+      title: CrunchDetectionLiquidityCrisis
+      type: object
+    CrunchDetectionResponse:
+      properties:
+        confidence_threshold:
+          title: Confidence Threshold
+          type: number
+        crises:
+          items:
+            $ref: '#/components/schemas/CrunchDetectionLiquidityCrisis'
+          title: Crises
+          type: array
+        forecast_horizon:
+          title: Forecast Horizon
+          type: integer
+      required:
+      - forecast_horizon
+      - confidence_threshold
+      - crises
+      title: CrunchDetectionResponse
+      type: object
+    DashboardUnifiedResponse:
+      properties:
+        aggregatedData:
+          additionalProperties: true
+          title: Aggregateddata
+          type: object
+        dataSources:
+          items:
+            type: string
+          title: Datasources
+          type: array
+        message:
+          title: Message
+          type: string
+        timeframe:
+          title: Timeframe
+          type: string
+        viewType:
+          title: Viewtype
+          type: string
+      required:
+      - dataSources
+      - timeframe
+      - viewType
+      - aggregatedData
+      - message
+      title: DashboardUnifiedResponse
+      type: object
+    ErpAccountingImportResponse:
+      properties:
+        importedRecords:
+          items:
+            $ref: '#/components/schemas/ErpAccountingRecord'
+          title: Importedrecords
+          type: array
+        message:
+          title: Message
+          type: string
+        totalAmount:
+          title: Totalamount
+          type: number
+        totalRecords:
+          title: Totalrecords
+          type: integer
+      required:
+      - importedRecords
+      - totalRecords
+      - totalAmount
+      - message
+      title: ErpAccountingImportResponse
+      type: object
+    ErpAccountingRecord:
+      properties:
+        amount:
+          title: Amount
+          type: number
+        date:
+          title: Date
+          type: string
+        description:
+          title: Description
+          type: string
+        id:
+          title: Id
+          type: string
+      required:
+      - id
+      - amount
+      - date
+      - description
+      title: ErpAccountingRecord
+      type: object
+    ErpConnectRequest:
+      properties:
+        connectionParams:
+          additionalProperties: true
+          title: Connectionparams
+          type: object
+        erpType:
+          title: Erptype
+          type: string
+        syncFrequency:
+          title: Syncfrequency
+          type: string
+      required:
+      - erpType
+      - connectionParams
+      - syncFrequency
+      title: ErpConnectRequest
+      type: object
+    ErpConnectResponse:
+      properties:
+        authToken:
+          title: Authtoken
+          type: string
+        message:
+          title: Message
+          type: string
+        status:
+          title: Status
+          type: string
+      required:
+      - status
+      - message
+      title: ErpConnectResponse
+      type: object
+    ErpEntityImportResponse:
+      properties:
+        importedRecords:
+          items:
+            $ref: '#/components/schemas/ErpEntityRecord'
+          title: Importedrecords
+          type: array
+        message:
+          title: Message
+          type: string
+        totalOutstanding:
+          title: Totaloutstanding
+          type: number
+        totalRecords:
+          title: Totalrecords
+          type: integer
+      required:
+      - importedRecords
+      - totalRecords
+      - totalOutstanding
+      - message
+      title: ErpEntityImportResponse
+      type: object
+    ErpEntityRecord:
+      properties:
+        entityId:
+          title: Entityid
+          type: string
+        entityType:
+          title: Entitytype
+          type: string
+        name:
+          title: Name
+          type: string
+        outstandingPayments:
+          title: Outstandingpayments
+          type: number
+        status:
+          title: Status
+          type: string
+      required:
+      - entityId
+      - name
+      - entityType
+      - status
+      - outstandingPayments
+      title: ErpEntityRecord
+      type: object
+    ErpInventoryImportResponse:
+      properties:
+        importedRecords:
+          items:
+            $ref: '#/components/schemas/ErpInventoryRecord'
+          title: Importedrecords
+          type: array
+        message:
+          title: Message
+          type: string
+        totalRecords:
+          title: Totalrecords
+          type: integer
+      required:
+      - importedRecords
+      - totalRecords
+      - message
+      title: ErpInventoryImportResponse
+      type: object
+    ErpInventoryRecord:
+      properties:
+        category:
+          title: Category
+          type: string
+        name:
+          title: Name
+          type: string
+        productId:
+          title: Productid
+          type: string
+        quantity:
+          title: Quantity
+          type: integer
+        warehouseId:
+          title: Warehouseid
+          type: string
+      required:
+      - productId
+      - name
+      - category
+      - warehouseId
+      - quantity
+      title: ErpInventoryRecord
+      type: object
+    ErpMappingRequest:
+      properties:
+        entityType:
+          title: Entitytype
+          type: string
+        erpType:
+          title: Erptype
+          type: string
+        fieldMappings:
+          additionalProperties:
+            type: string
+          title: Fieldmappings
+          type: object
+      required:
+      - erpType
+      - entityType
+      - fieldMappings
+      title: ErpMappingRequest
+      type: object
+    ErpMappingResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        status:
+          title: Status
+          type: string
+      required:
+      - status
+      - message
+      title: ErpMappingResponse
+      type: object
+    ErpModuleSyncResult:
+      properties:
+        moduleName:
+          title: Modulename
+          type: string
+        recordsSynced:
+          title: Recordssynced
+          type: integer
+        status:
+          title: Status
+          type: string
+      required:
+      - moduleName
+      - status
+      - recordsSynced
+      title: ErpModuleSyncResult
+      type: object
+    ErpSyncLogEntry:
+      properties:
+        message:
+          title: Message
+          type: string
+        timestamp:
+          title: Timestamp
+          type: string
+      required:
+      - timestamp
+      - message
+      title: ErpSyncLogEntry
+      type: object
+    ErpSyncRequest:
+      properties:
+        dataModules:
+          items:
+            type: string
+          title: Datamodules
+          type: array
+        syncDirection:
+          title: Syncdirection
+          type: string
+      required:
+      - syncDirection
+      - dataModules
+      title: ErpSyncRequest
+      type: object
+    ErpSyncResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        results:
+          items:
+            $ref: '#/components/schemas/ErpModuleSyncResult'
+          title: Results
+          type: array
+        totalModules:
+          title: Totalmodules
+          type: integer
+      required:
+      - results
+      - totalModules
+      - message
+      title: ErpSyncResponse
+      type: object
+    ErpSyncStatusRecord:
+      properties:
+        completedAt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Completedat
+        logs:
+          items:
+            $ref: '#/components/schemas/ErpSyncLogEntry'
+          title: Logs
+          type: array
+        startedAt:
+          title: Startedat
+          type: string
+        status:
+          title: Status
+          type: string
+        syncId:
+          title: Syncid
+          type: string
+      required:
+      - syncId
+      - status
+      - startedAt
+      - logs
+      title: ErpSyncStatusRecord
+      type: object
+    ErpSyncStatusResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        syncRecords:
+          items:
+            $ref: '#/components/schemas/ErpSyncStatusRecord'
+          title: Syncrecords
+          type: array
+        totalRecords:
+          title: Totalrecords
+          type: integer
+      required:
+      - syncRecords
+      - totalRecords
+      - message
+      title: ErpSyncStatusResponse
+      type: object
     HTTPValidationError:
       properties:
         detail:
@@ -8,6 +439,340 @@ components:
           title: Detail
           type: array
       title: HTTPValidationError
+      type: object
+    IntegrationCorrelationRequest:
+      properties:
+        correlationType:
+          title: Correlationtype
+          type: string
+        dataSources:
+          items:
+            type: string
+          title: Datasources
+          type: array
+      required:
+      - dataSources
+      - correlationType
+      title: IntegrationCorrelationRequest
+      type: object
+    IntegrationCorrelationResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        results:
+          items:
+            $ref: '#/components/schemas/IntegrationCorrelationResult'
+          title: Results
+          type: array
+        totalPairs:
+          title: Totalpairs
+          type: integer
+      required:
+      - results
+      - totalPairs
+      - message
+      title: IntegrationCorrelationResponse
+      type: object
+    IntegrationCorrelationResult:
+      properties:
+        correlationScore:
+          title: Correlationscore
+          type: number
+        dataSourcePair:
+          title: Datasourcepair
+          type: string
+        insights:
+          items:
+            type: string
+          title: Insights
+          type: array
+      required:
+      - dataSourcePair
+      - correlationScore
+      - insights
+      title: IntegrationCorrelationResult
+      type: object
+    IntegrationInventoryImpactEntry:
+      properties:
+        cashFlowImpact:
+          title: Cashflowimpact
+          type: number
+        category:
+          title: Category
+          type: string
+        stockValue:
+          title: Stockvalue
+          type: number
+      required:
+      - category
+      - stockValue
+      - cashFlowImpact
+      title: IntegrationInventoryImpactEntry
+      type: object
+    IntegrationInventoryImpactResponse:
+      properties:
+        details:
+          items:
+            $ref: '#/components/schemas/IntegrationInventoryImpactEntry'
+          title: Details
+          type: array
+        message:
+          title: Message
+          type: string
+        timeframe:
+          title: Timeframe
+          type: integer
+        totalCashFlowImpact:
+          title: Totalcashflowimpact
+          type: number
+        totalStockValue:
+          title: Totalstockvalue
+          type: number
+      required:
+      - timeframe
+      - totalStockValue
+      - totalCashFlowImpact
+      - details
+      - message
+      title: IntegrationInventoryImpactResponse
+      type: object
+    IntegrationInventoryOptimizationEntry:
+      properties:
+        category:
+          title: Category
+          type: string
+        currentStock:
+          title: Currentstock
+          type: integer
+        expectedImpact:
+          title: Expectedimpact
+          type: number
+        rationale:
+          title: Rationale
+          type: string
+        recommendedStock:
+          title: Recommendedstock
+          type: integer
+      required:
+      - category
+      - currentStock
+      - recommendedStock
+      - expectedImpact
+      - rationale
+      title: IntegrationInventoryOptimizationEntry
+      type: object
+    IntegrationInventoryOptimizationResponse:
+      properties:
+        cashConstraint:
+          title: Cashconstraint
+          type: number
+        message:
+          title: Message
+          type: string
+        priority:
+          title: Priority
+          type: string
+        recommendations:
+          items:
+            $ref: '#/components/schemas/IntegrationInventoryOptimizationEntry'
+          title: Recommendations
+          type: array
+      required:
+      - cashConstraint
+      - priority
+      - recommendations
+      - message
+      title: IntegrationInventoryOptimizationResponse
+      type: object
+    PosConnectRequest:
+      properties:
+        connectionParams:
+          additionalProperties: true
+          title: Connectionparams
+          type: object
+        posType:
+          title: Postype
+          type: string
+        storeId:
+          title: Storeid
+          type: string
+      required:
+      - posType
+      - connectionParams
+      - storeId
+      title: PosConnectRequest
+      type: object
+    PosConnectResponse:
+      properties:
+        authToken:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authtoken
+        message:
+          title: Message
+          type: string
+        status:
+          title: Status
+          type: string
+      required:
+      - status
+      - message
+      title: PosConnectResponse
+      type: object
+    PosProductSyncRequest:
+      properties:
+        productCategories:
+          items:
+            type: string
+          title: Productcategories
+          type: array
+        syncDirection:
+          title: Syncdirection
+          type: string
+      required:
+      - syncDirection
+      - productCategories
+      title: PosProductSyncRequest
+      type: object
+    PosProductSyncResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        results:
+          items:
+            $ref: '#/components/schemas/PosProductSyncResult'
+          title: Results
+          type: array
+        totalCategories:
+          title: Totalcategories
+          type: integer
+      required:
+      - results
+      - totalCategories
+      - message
+      title: PosProductSyncResponse
+      type: object
+    PosProductSyncResult:
+      properties:
+        categoryName:
+          title: Categoryname
+          type: string
+        productsSynced:
+          title: Productssynced
+          type: integer
+        status:
+          title: Status
+          type: string
+      required:
+      - categoryName
+      - status
+      - productsSynced
+      title: PosProductSyncResult
+      type: object
+    PosSalesAnalysisResponse:
+      properties:
+        message:
+          title: Message
+          type: string
+        productCategory:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Productcategory
+        storeId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Storeid
+        timeframe:
+          title: Timeframe
+          type: string
+        totalSales:
+          title: Totalsales
+          type: number
+        totalTransactions:
+          title: Totaltransactions
+          type: integer
+        trend:
+          items:
+            $ref: '#/components/schemas/PosSalesTrendEntry'
+          title: Trend
+          type: array
+      required:
+      - timeframe
+      - totalSales
+      - totalTransactions
+      - trend
+      - message
+      title: PosSalesAnalysisResponse
+      type: object
+    PosSalesTrendEntry:
+      properties:
+        date:
+          title: Date
+          type: string
+        totalSales:
+          title: Totalsales
+          type: number
+        transactions:
+          title: Transactions
+          type: integer
+      required:
+      - date
+      - totalSales
+      - transactions
+      title: PosSalesTrendEntry
+      type: object
+    PosTransactionImportResponse:
+      properties:
+        importedTransactions:
+          items:
+            $ref: '#/components/schemas/PosTransactionRecord'
+          title: Importedtransactions
+          type: array
+        message:
+          title: Message
+          type: string
+        totalAmount:
+          title: Totalamount
+          type: number
+        totalTransactions:
+          title: Totaltransactions
+          type: integer
+      required:
+      - importedTransactions
+      - totalTransactions
+      - totalAmount
+      - message
+      title: PosTransactionImportResponse
+      type: object
+    PosTransactionRecord:
+      properties:
+        amount:
+          title: Amount
+          type: number
+        date:
+          title: Date
+          type: string
+        storeId:
+          title: Storeid
+          type: string
+        transactionId:
+          title: Transactionid
+          type: string
+        transactionType:
+          title: Transactiontype
+          type: string
+      required:
+      - transactionId
+      - date
+      - transactionType
+      - amount
+      - storeId
+      title: PosTransactionRecord
       type: object
     RobotControlRequest:
       properties:
@@ -25,12 +790,12 @@ components:
           - bassa
           title: Priority
           type: string
-        zone_id:
-          title: Zone Id
+        zoneId:
+          title: Zoneid
           type: integer
       required:
       - command
-      - zone_id
+      - zoneId
       - priority
       title: RobotControlRequest
       type: object
@@ -49,8 +814,8 @@ components:
       type: object
     RobotImageRequest:
       properties:
-        image_data:
-          title: Image Data
+        imageData:
+          title: Imagedata
           type: string
         location:
           title: Location
@@ -65,38 +830,38 @@ components:
           title: Timestamp
           type: string
       required:
-      - image_data
+      - imageData
       - timestamp
       - location
       title: RobotImageRequest
       type: object
     RobotImageResponse:
       properties:
-        image_id:
-          title: Image Id
+        imageId:
+          title: Imageid
           type: string
         status:
           title: Status
           type: string
       required:
-      - image_id
+      - imageId
       - status
       title: RobotImageResponse
       type: object
     RobotRecognitionRequest:
       properties:
-        image_id:
-          title: Image Id
+        imageId:
+          title: Imageid
           type: string
-        recognition_mode:
+        recognitionMode:
           enum:
           - rapida
           - accurata
-          title: Recognition Mode
+          title: Recognitionmode
           type: string
       required:
-      - image_id
-      - recognition_mode
+      - imageId
+      - recognitionMode
       title: RobotRecognitionRequest
       type: object
     RobotRecognizedProduct:
@@ -118,25 +883,25 @@ components:
       type: object
     RobotRecognizedResponse:
       properties:
-        image_id:
-          title: Image Id
+        imageId:
+          title: Imageid
           type: string
-        recognized_products:
+        recognizedProducts:
           items:
             $ref: '#/components/schemas/RobotRecognizedProduct'
-          title: Recognized Products
+          title: Recognizedproducts
           type: array
       required:
-      - image_id
-      - recognized_products
+      - imageId
+      - recognizedProducts
       title: RobotRecognizedResponse
       type: object
     RobotScheduleRequest:
       properties:
-        priority_zones:
+        priorityZones:
           items:
             type: integer
-          title: Priority Zones
+          title: Priorityzones
           type: array
         schedule:
           items:
@@ -145,7 +910,7 @@ components:
           type: array
       required:
       - schedule
-      - priority_zones
+      - priorityZones
       title: RobotScheduleRequest
       type: object
     RobotScheduleResponse:
@@ -153,14 +918,14 @@ components:
         message:
           title: Message
           type: string
-        scheduled_scans:
+        scheduledScans:
           items:
             $ref: '#/components/schemas/RobotScheduleScan'
-          title: Scheduled Scans
+          title: Scheduledscans
           type: array
       required:
       - message
-      - scheduled_scans
+      - scheduledScans
       title: RobotScheduleResponse
       type: object
     RobotScheduleScan:
@@ -168,50 +933,50 @@ components:
         priority:
           title: Priority
           type: string
-        start_time:
-          title: Start Time
+        startTime:
+          title: Starttime
           type: string
-        zone_id:
-          title: Zone Id
+        zoneId:
+          title: Zoneid
           type: integer
       required:
-      - zone_id
-      - start_time
+      - zoneId
+      - startTime
       - priority
       title: RobotScheduleScan
       type: object
     RobotScheduleScanItem:
       properties:
-        start_time:
-          title: Start Time
+        starTime:
+          title: Startime
           type: string
-        zone_id:
-          title: Zone Id
+        zoneId:
+          title: Zoneid
           type: integer
       required:
-      - zone_id
-      - start_time
+      - zoneId
+      - starTime
       title: RobotScheduleScanItem
       type: object
     RobotStatusResponse:
       properties:
-        battery_level:
-          title: Battery Level
+        batteryLevel:
+          title: Batterylevel
           type: number
-        current_activity:
-          title: Current Activity
+        currentActivity:
+          title: Currentactivity
           type: string
         position:
           title: Position
           type: string
-        robot_status:
-          title: Robot Status
+        robotStatus:
+          title: Robotstatus
           type: string
       required:
-      - robot_status
+      - robotStatus
       - position
-      - battery_level
-      - current_activity
+      - batteryLevel
+      - currentActivity
       title: RobotStatusResponse
       type: object
     ValidationError:
@@ -236,53 +1001,827 @@ components:
       title: ValidationError
       type: object
 info:
-  title: FastAPI
-  version: 0.1.0
+  description: API per robot, cashflow, erp, pos, integration e dashboard
+  title: APTISMART API
+  version: 1.0.0
 openapi: 3.1.0
 paths:
-  /cashflow/:
-    get:
-      operationId: first_cashflow_api_cashflow__get
+  /cashflow/accountingDdata:
+    post:
+      description: 'Aggiorna i dati contabili interni
+
+
+        ### Parametri:
+
+        - **dataType**: Tipo di dati (fatture, ordini, prestiti)
+
+        - **data**: Array di oggetti con i dati contabili
+
+
+        ### Risposta:
+
+        Conferma di aggiornamento con statistiche'
+      operationId: update_accounting_data_cashflow_accountingDdata_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountingDataRequest'
+        required: true
       responses:
-        '204':
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountingDataResponse'
           description: Successful Response
-      summary: First Cashflow Api
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Aggiorna i dati contabili interni
       tags:
       - cashflow
-  /dashboard/:
+  /cashflow/crunchDetection:
     get:
-      operationId: first_dashboard_api_dashboard__get
+      description: 'Identifica potenziali crisi di liquidità
+
+
+        ### Parametri:
+
+        - **confidenceThreshold**: Soglia di confidenza (0.0-1.0)
+
+        - **forecastHorizon**: Orizzonte di previsione in giorni
+
+
+        ### Risposta:
+
+        Dettagli sulle potenziali crisi di liquidità con date e probabilità'
+      operationId: get_crunch_detection_cashflow_crunchDetection_get
+      parameters:
+      - description: Soglia minima di confidenza
+        in: query
+        name: confidenceThreshold
+        required: true
+        schema:
+          description: Soglia minima di confidenza
+          maximum: 1.0
+          minimum: 0.0
+          title: Confidencethreshold
+          type: number
+      - description: Orizzonte temporale di previsione in giorni
+        in: query
+        name: forecastHorizon
+        required: true
+        schema:
+          description: Orizzonte temporale di previsione in giorni
+          maximum: 365
+          minimum: 1
+          title: Forecasthorizon
+          type: integer
       responses:
-        '204':
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrunchDetectionResponse'
           description: Successful Response
-      summary: First Dashboard Api
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Identifica potenziali crisi di liquidità
+      tags:
+      - cashflow
+  /dashboard/unified:
+    get:
+      description: 'Fornisce dati aggregati da tutte le fonti per la dashboard
+
+
+        ### Parametri:
+
+        - **dataSources**: Array di fonti dati da includere
+
+        - **timeframe**: Periodo di analisi
+
+        - **viewType**: Tipo di visualizzazione (operativa, strategica, finanziaria)
+
+
+        ### Risposta:
+
+        Dati aggregati per la visualizzazione nella dashboard unificata'
+      operationId: unified_dashboard_dashboard_unified_get
+      parameters:
+      - description: Array di fonti dati da includere (es. robot, pos, erp)
+        in: query
+        name: data_sources
+        required: true
+        schema:
+          description: Array di fonti dati da includere (es. robot, pos, erp)
+          items:
+            type: string
+          title: Data Sources
+          type: array
+      - description: Periodo di analisi (es. giornaliero, settimanale, mensile)
+        in: query
+        name: timeframe
+        required: true
+        schema:
+          description: Periodo di analisi (es. giornaliero, settimanale, mensile)
+          title: Timeframe
+          type: string
+      - description: Tipo di visualizzazione (operativa, strategica, finanziaria)
+        in: query
+        name: view_type
+        required: true
+        schema:
+          description: Tipo di visualizzazione (operativa, strategica, finanziaria)
+          title: View Type
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardUnifiedResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Fornisce dati aggregati da tutte le fonti per la dashboard
       tags:
       - dashboard
-  /erp/:
-    get:
-      operationId: first_erp_api_erp__get
+  /erp/connect:
+    post:
+      description: 'Stabilisce una connessione con il gestionale aziendale
+
+
+        ### Parametri:
+
+        - **erpType**: Tipo di gestionale (SAP, Oracle, Zucchetti, ecc.)
+
+        - **connectionParams**: Parametri di connessione (URL, credenziali, ecc.)
+
+        - **syncFrequency**: Frequenza di sincronizzazione dei dati
+
+
+        ### Risposta:
+
+        Stato della connessione e token di autenticazione'
+      operationId: connect_erp_connect_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErpConnectRequest'
+        required: true
       responses:
-        '204':
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErpConnectResponse'
           description: Successful Response
-      summary: First Erp Api
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Stabilisce una connessione con il gestionale aziendale
       tags:
       - erp
-  /integration/:
+  /erp/import/accounting:
     get:
-      operationId: first_integration_api_integration__get
+      description: 'Importa dati contabili dal gestionale
+
+
+        ### Parametri:
+
+        - **dataType**: Tipo di dati (fatture, ordini, pagamenti)
+
+        - **startDate**: Data di inizio periodo
+
+        - **endDate**: Data di fine periodo
+
+
+        ### Risposta:
+
+        Dati contabili importati e statistiche di sincronizzazione'
+      operationId: import_accounting_data_erp_import_accounting_get
+      parameters:
+      - description: Tipo di dati (fatture, ordini, pagamenti)
+        in: query
+        name: data_type
+        required: true
+        schema:
+          description: Tipo di dati (fatture, ordini, pagamenti)
+          title: Data Type
+          type: string
+      - description: Data di inizio periodo
+        in: query
+        name: start_date
+        required: true
+        schema:
+          description: Data di inizio periodo
+          title: Start Date
+          type: string
+      - description: Data di fine periodo
+        in: query
+        name: end_date
+        required: true
+        schema:
+          description: Data di fine periodo
+          title: End Date
+          type: string
       responses:
-        '204':
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErpAccountingImportResponse'
           description: Successful Response
-      summary: First Integration Api
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Importa dati contabili dal gestionale
+      tags:
+      - erp
+  /erp/import/entities:
+    get:
+      description: 'Importa dati su clienti e fornitori dal gestionale
+
+
+        ### Parametri:
+
+        - **entityType**: Tipo di entità (cliente, fornitore)
+
+        - **status**: Stato (attivo, inattivo)
+
+
+        ### Risposta:
+
+        Dati delle entità importate con statistiche di pagamento'
+      operationId: import_entities_erp_import_entities_get
+      parameters:
+      - description: Tipo di entità (cliente, fornitore)
+        in: query
+        name: entityType
+        required: true
+        schema:
+          description: Tipo di entità (cliente, fornitore)
+          title: Entitytype
+          type: string
+      - description: Stato (attivo, inattivo)
+        in: query
+        name: status
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Stato (attivo, inattivo)
+          title: Status
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErpEntityImportResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Importa dati su clienti e fornitori dal gestionale
+      tags:
+      - erp
+  /erp/import/inventory:
+    get:
+      description: 'Importa dati di inventario dal gestionale
+
+
+        ### Parametri:
+
+        - **warehouseId**: ID del magazzino (opzionale)
+
+        - **product_Category**: Categoria di prodotti (opzionale)
+
+
+        ### Risposta:
+
+        Dati di inventario importati e statistiche'
+      operationId: import_inventory_data_erp_import_inventory_get
+      parameters:
+      - description: ID del magazzino (opzionale)
+        in: query
+        name: warehouse_id
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: ID del magazzino (opzionale)
+          title: Warehouse Id
+      - description: Categoria di prodotti (opzionale)
+        in: query
+        name: product_category
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Categoria di prodotti (opzionale)
+          title: Product Category
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErpInventoryImportResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Importa dati di inventario dal gestionale
+      tags:
+      - erp
+  /erp/mapping:
+    put:
+      description: 'Configura la mappatura tra i campi del gestionale e quelli del
+        sistema
+
+
+        ### Parametri:
+
+        - **erpType**: Tipo di gestionale
+
+        - **entityType**: Tipo di entità (cliente, fornitore, prodotto, ecc.)
+
+        - **fieldMappings**: Oggetto con le mappature dei campi
+
+
+        ### Risposta:
+
+        Stato della configurazione della mappatura'
+      operationId: configure_mapping_erp_mapping_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErpMappingRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErpMappingResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Configura la mappatura tra i campi del gestionale e quelli del sistema
+      tags:
+      - erp
+  /erp/sync:
+    post:
+      description: 'Sincronizza i dati tra il sistema di previsione e il gestionale
+
+
+        ### Parametri:
+
+        - **syncDirection**: Direzione della sincronizzazione (import, export, bidirectional)
+
+        - **dataModules**: Array di moduli da sincronizzare
+
+
+        ### Risposta:
+
+        Risultati della sincronizzazione con dettagli per ogni modulo'
+      operationId: sync_data_erp_sync_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErpSyncRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErpSyncResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Sincronizza i dati tra il sistema di previsione e il gestionale
+      tags:
+      - erp
+  /erp/sync/status:
+    get:
+      description: 'Monitora lo stato delle sincronizzazioni con i gestionali
+
+
+        ### Parametri:
+
+        - **syncId**: ID della sincronizzazione (opzionale)
+
+        - **status**: Filtra per stato (in corso, completato, fallito)
+
+
+        ### Risposta:
+
+        Stato dettagliato delle sincronizzazioni con timestamp e log'
+      operationId: monitor_sync_status_erp_sync_status_get
+      parameters:
+      - description: ID della sincronizzazione (opzionale)
+        in: query
+        name: syncId
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: ID della sincronizzazione (opzionale)
+          title: Syncid
+      - description: Filtra per stato (in corso, completato, fallito)
+        in: query
+        name: status
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Filtra per stato (in corso, completato, fallito)
+          title: Status
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErpSyncStatusResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Monitora lo stato delle sincronizzazioni con i gestionali
+      tags:
+      - erp
+  /integration/correlate:
+    post:
+      description: 'Correla i dati provenienti da robot, POS e gestionali
+
+
+        ### Parametri:
+
+        - **dataSources**: Array di fonti dati da correlare
+
+        - **correlationType**: Tipo di correlazione (inventario-vendite, vendite-flusso
+        di cassa, ecc.)
+
+
+        ### Risposta:
+
+        Risultati della correlazione con insights'
+      operationId: correlate_data_integration_correlate_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationCorrelationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationCorrelationResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Correla i dati provenienti da robot, POS e gestionali
       tags:
       - integration
-  /pos/:
+  /integration/inventoryImpact:
     get:
-      operationId: first_pos_api_pos__get
+      description: 'Calcola l''impatto dell''inventario attuale sul flusso di cassa
+
+
+        ### Parametri:
+
+        - **timeframe**: Periodo di analisi in giorni
+
+
+        ### Risposta:
+
+        Analisi dell''impatto dell''inventario sul flusso di cassa'
+      operationId: inventory_impact_integration_inventoryImpact_get
+      parameters:
+      - description: Periodo di analisi in giorni
+        in: query
+        name: timeframe
+        required: true
+        schema:
+          description: Periodo di analisi in giorni
+          title: Timeframe
+          type: integer
       responses:
-        '204':
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationInventoryImpactResponse'
           description: Successful Response
-      summary: First Pos Api
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Calcola l'impatto dell'inventario attuale sul flusso di cassa
+      tags:
+      - integration
+  /integration/inventoryOptimization:
+    get:
+      description: 'Suggerisce ottimizzazioni dell''inventario basate sulle previsioni
+        di flusso di cassa
+
+
+        ### Parametri:
+
+        - **cashConstraint**: Vincolo di liquidità
+
+        - **priority**: Priorità (liquidità, vendite, margine)
+
+
+        ### Risposta:
+
+        Raccomandazioni per l''ottimizzazione delle scorte'
+      operationId: inventory_optimization_integration_inventoryOptimization_get
+      parameters:
+      - description: Vincolo di liquidità disponibile
+        in: query
+        name: cash_constraint
+        required: true
+        schema:
+          description: Vincolo di liquidità disponibile
+          title: Cash Constraint
+          type: number
+      - description: Priorità dell'ottimizzazione (liquidità, vendite, margine)
+        in: query
+        name: priority
+        required: true
+        schema:
+          description: Priorità dell'ottimizzazione (liquidità, vendite, margine)
+          title: Priority
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationInventoryOptimizationResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Suggerisce ottimizzazioni dell'inventario basate sulle previsioni di
+        flusso di cassa
+      tags:
+      - integration
+  /pos/connect:
+    post:
+      description: 'Stabilisce una connessione con il sistema POS
+
+
+        ### Parametri:
+
+        - **posType**: Tipo di POS (marca e modello)
+
+        - **connectionParams**: Parametri di connessione
+
+        - **storeId**: ID del negozio
+
+
+        ### Risposta:
+
+        Stato della connessione e token di autenticazione'
+      operationId: connect_pos_pos_connect_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PosConnectRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosConnectResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Stabilisce una connessione con il sistema POS
+      tags:
+      - pos
+  /pos/products/sync:
+    post:
+      description: 'Sincronizza i dati dei prodotti tra il sistema e il POS
+
+
+        ### Parametri:
+
+        - **syncDirection**: Direzione della sincronizzazione (import, export, bidirectional)
+
+        - **productCategories**: Categorie di prodotti da sincronizzare
+
+
+        ### Risposta:
+
+        Risultati della sincronizzazione con dettagli'
+      operationId: sync_products_pos_products_sync_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PosProductSyncRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosProductSyncResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Sincronizza i dati dei prodotti tra il sistema e il POS
+      tags:
+      - pos
+  /pos/sales/analysis:
+    get:
+      description: 'Ottiene analisi delle vendite dal sistema POS
+
+
+        ### Parametri:
+
+        - **timeframe**: Periodo di analisi (giornaliero, settimanale, mensile)
+
+        - **productCategory**: Categoria di prodotti (opzionale)
+
+        - **storeId**: ID del negozio (opzionale)
+
+
+        ### Risposta:
+
+        Dati di analisi delle vendite con trend e statistiche'
+      operationId: analyze_sales_pos_sales_analysis_get
+      parameters:
+      - description: Periodo di analisi (giornaliero, settimanale, mensile)
+        in: query
+        name: timeframe
+        required: true
+        schema:
+          description: Periodo di analisi (giornaliero, settimanale, mensile)
+          title: Timeframe
+          type: string
+      - description: Categoria di prodotti (opzionale)
+        in: query
+        name: product_category
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Categoria di prodotti (opzionale)
+          title: Product Category
+      - description: ID del negozio (opzionale)
+        in: query
+        name: store_id
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: ID del negozio (opzionale)
+          title: Store Id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosSalesAnalysisResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Ottiene analisi delle vendite dal sistema POS
+      tags:
+      - pos
+  /pos/transactions:
+    get:
+      description: 'Importa le transazioni dal sistema POS
+
+
+        ### Parametri:
+
+        - **startDate**: Data di inizio periodo
+
+        - **endDate**: Data di fine periodo
+
+        - **transactionType**: Tipo di transazione (vendita, reso, ecc.)
+
+
+        ### Risposta:
+
+        Dati delle transazioni importate con statistiche'
+      operationId: import_transactions_pos_transactions_get
+      parameters:
+      - description: Data di inizio periodo
+        in: query
+        name: start_date
+        required: true
+        schema:
+          description: Data di inizio periodo
+          title: Start Date
+          type: string
+      - description: Data di fine periodo
+        in: query
+        name: end_date
+        required: true
+        schema:
+          description: Data di fine periodo
+          title: End Date
+          type: string
+      - description: Tipo di transazione (vendita, reso, ecc.)
+        in: query
+        name: transaction_type
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Tipo di transazione (vendita, reso, ecc.)
+          title: Transaction Type
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PosTransactionImportResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Importa le transazioni dal sistema POS
       tags:
       - pos
   /robot/control:
@@ -294,7 +1833,7 @@ paths:
 
         - **command**: Tipo di comando (start_scan, stop_scan, return_to_base)
 
-        - **zone_id**: ID della zona da scansionare
+        - **zoneId**: ID della zona da scansionare
 
         - **priority**: Priorità del comando (alta, media, bassa)
 
@@ -332,7 +1871,7 @@ paths:
 
         ### Parametri:
 
-        - **image_data**: Dati dell''immagine (base64 o URL)
+        - **imageData**: Dati dell''immagine (base64 o URL)
 
         - **timestamp**: Data e ora dell''acquisizione
 
@@ -374,9 +1913,9 @@ paths:
 
         ### Parametri:
 
-        - **image_id**: ID dell''immagine da elaborare
+        - **imageId**: ID dell''immagine da elaborare
 
-        - **recognition_mode**: Modalità di riconoscimento (rapida, accurata)
+        - **recognitionMode**: Modalità di riconoscimento (rapida, accurata)
 
 
         ### Risposta:
@@ -414,7 +1953,7 @@ paths:
 
         - **schedule**: Array di oggetti con orari e zone da scansionare
 
-        - **priority_zones**: Zone con priorità di scansione più alta
+        - **priorityZones**: Zone con priorità di scansione più alta
 
 
         ### Risposta:
@@ -450,7 +1989,7 @@ paths:
 
         ### Parametri:
 
-        - **details_level**: Livello di dettaglio (base, completo)
+        - **detailsLevel**: Livello di dettaglio (base, completo)
 
 
         ### Risposta:
@@ -459,10 +1998,10 @@ paths:
       operationId: get_status_robot_status_get
       parameters:
       - in: query
-        name: details_level
+        name: detailsLevel
         required: true
         schema:
-          title: Details Level
+          title: Detailslevel
           type: string
       responses:
         '200':
