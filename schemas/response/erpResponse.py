@@ -34,3 +34,16 @@ class ErpInventoryImportResponse(BaseModel):
     importedRecords: List[ErpInventoryRecord] = Field(..., alias="importedRecords")
     totalRecords: int = Field(..., alias="totalRecords")
     message: str
+
+
+class ErpModuleSyncResult(BaseModel):
+    moduleName: str
+    status: str
+    recordsSynced: int
+
+
+class ErpSyncResponse(BaseModel):
+    results: List[ErpModuleSyncResult] = Field(..., alias="results")
+    totalModules: int = Field(..., alias="totalModules")
+    message: str
+

@@ -6,10 +6,10 @@ from starlette import status
 from metadata.apiDocs import api_docs
 from metadata.erpDocs import erp_connect_desc, erp_connect_params, erp_connect_response, erp_accounting_desc, \
     erp_accounting_params, erp_accounting_response, erp_import_inventory_desc, erp_import_inventory_params, \
-    erp_import_inventory_response
-from schemas.request.erpRequest import ErpConnectRequest
+    erp_import_inventory_response, erp_sync_desc, erp_sync_params, erp_sync_response
+from schemas.request.erpRequest import ErpConnectRequest, ErpSyncRequest
 from schemas.response.erpResponse import ErpConnectResponse, ErpAccountingImportResponse, \
-    ErpAccountingRecord, ErpInventoryImportResponse, ErpInventoryRecord
+    ErpAccountingRecord, ErpInventoryImportResponse, ErpInventoryRecord, ErpSyncResponse, ErpModuleSyncResult
 
 router = APIRouter(
     prefix="/erp",
@@ -101,3 +101,30 @@ async def import_inventory_data(
         message=f"Importati {len(filtered_inventory)} record di inventario."
     )
     return response
+
+
+@router.post(
+    "/sync",
+    response_model=ErpSyncResponse,
+    status_code=status.HTTP_200_OK,
+    **api_docs(erp_sync_desc, erp_sync_params, erp_sync_response)
+)
+async def sync_data(request: ErpSyncRequest):
+    # Dati Mockati
+    mock_results = []
+    for module in request.dataModules:
+        mock_results.append(
+            ErpModuleSyncResult(
+                moduleName=module,
+                status="success",
+                recordsSynced=10
+            )
+        )
+
+    response = ErpSyncResponse(
+        results=mock_results,
+        totalModules=len(request.dataModules),
+        message=f"Sincronizzati {len(request.dataModules)} moduli in {request.syncDirection} mode."
+    )
+    return response
+
