@@ -34,3 +34,19 @@ class PosProductSyncResponse(BaseModel):
     totalCategories: int = Field(..., alias="totalCategories")
     message: str
 
+
+class PosSalesTrendEntry(BaseModel):
+    date: str
+    totalSales: float
+    transactions: int
+
+
+class PosSalesAnalysisResponse(BaseModel):
+    storeId: Optional[str] = None
+    productCategory: Optional[str] = None
+    timeframe: str
+    totalSales: float
+    totalTransactions: int
+    trend: List[PosSalesTrendEntry]
+    message: str
+

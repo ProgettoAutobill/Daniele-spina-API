@@ -5,10 +5,10 @@ from starlette import status
 from metadata.apiDocs import api_docs
 from metadata.posDocs import pos_connect_params, pos_connect_desc, pos_connect_response, pos_transactions_desc, \
     pos_transactions_params, pos_transactions_response, pos_products_sync_desc, pos_products_sync_params, \
-    pos_products_sync_response
+    pos_products_sync_response, pos_sales_analysis_desc, pos_sales_analysis_params, pos_sales_analysis_response
 from schemas.request.posRequest import PosConnectRequest, PosProductSyncRequest
 from schemas.response.posResponse import PosConnectResponse, PosTransactionImportResponse, PosTransactionRecord, \
-    PosProductSyncResponse, PosProductSyncResult
+    PosProductSyncResponse, PosProductSyncResult, PosSalesTrendEntry, PosSalesAnalysisResponse
 
 router = APIRouter(
     prefix="/pos",
@@ -100,4 +100,39 @@ async def sync_products(request: PosProductSyncRequest):
         totalCategories=len(request.productCategories),
         message=f"Sincronizzate {len(request.productCategories)} categorie di prodotti in {request.syncDirection} mode."
     )
+    return response
+
+
+@router.get(
+    "/sales/analysis",
+    response_model=PosSalesAnalysisResponse,
+    status_code=status.HTTP_200_OK,
+    ** api_docs(pos_sales_analysis_desc, pos_sales_analysis_params, pos_sales_analysis_response)
+)
+async def analyze_sales(
+        timeframe: str = Query(..., description="Periodo di analisi (giornaliero, settimanale, mensile)"),
+        product_category: Optional[str] = Query(None, description="Categoria di prodotti (opzionale)"),
+        store_id: Optional[str] = Query(None, description="ID del negozio (opzionale)")
+):
+    # Mock dei dati di trend
+    mock_trend = [
+        PosSalesTrendEntry(date="2025-09-21", totalSales=1000.0, transactions=25),
+        PosSalesTrendEntry(date="2025-09-22", totalSales=1200.0, transactions=30),
+        PosSalesTrendEntry(date="2025-09-23", totalSales=900.0, transactions=20),
+        PosSalesTrendEntry(date="2025-09-24", totalSales=1500.0, transactions=35)
+    ]
+
+    total_sales = sum(entry.totalSales for entry in mock_trend)
+    total_transactions = sum(entry.transactions for entry in mock_trend)
+
+    response = PosSalesAnalysisResponse(
+        storeId=store_id,
+        productCategory=product_category,
+        timeframe=timeframe,
+        totalSales=total_sales,
+        totalTransactions=total_transactions,
+        trend=mock_trend,
+        message=f"Analisi delle vendite completata per timeframe '{timeframe}'."
+    )
+
     return response
