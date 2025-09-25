@@ -387,10 +387,9 @@ components:
     ErpSyncStatusRecord:
       properties:
         completedAt:
-          anyOf:
-          - type: string
-          - type: 'null'
+          nullable: true
           title: Completedat
+          type: string
         logs:
           items:
             $ref: '#/components/schemas/ErpSyncLogEntry'
@@ -606,10 +605,9 @@ components:
     PosConnectResponse:
       properties:
         authToken:
-          anyOf:
-          - type: string
-          - type: 'null'
+          nullable: true
           title: Authtoken
+          type: string
         message:
           title: Message
           type: string
@@ -678,15 +676,13 @@ components:
           title: Message
           type: string
         productCategory:
-          anyOf:
-          - type: string
-          - type: 'null'
+          nullable: true
           title: Productcategory
+          type: string
         storeId:
-          anyOf:
-          - type: string
-          - type: 'null'
+          nullable: true
           title: Storeid
+          type: string
         timeframe:
           title: Timeframe
           type: string
@@ -821,11 +817,10 @@ components:
           title: Location
           type: string
         metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
+          additionalProperties: true
+          nullable: true
           title: Metadata
+          type: object
         timestamp:
           title: Timestamp
           type: string
@@ -1004,7 +999,7 @@ info:
   description: API per robot, cashflow, erp, pos, integration e dashboard
   title: APTISMART API
   version: 1.0.0
-openapi: 3.1.0
+openapi: 3.0.3
 paths:
   /cashflow/accountingDdata:
     post:
@@ -1287,11 +1282,10 @@ paths:
         name: status
         required: false
         schema:
-          anyOf:
-          - type: string
-          - type: 'null'
           description: Stato (attivo, inattivo)
+          nullable: true
           title: Status
+          type: string
       responses:
         '200':
           content:
@@ -1330,21 +1324,19 @@ paths:
         name: warehouse_id
         required: false
         schema:
-          anyOf:
-          - type: string
-          - type: 'null'
           description: ID del magazzino (opzionale)
+          nullable: true
           title: Warehouse Id
+          type: string
       - description: Categoria di prodotti (opzionale)
         in: query
         name: product_category
         required: false
         schema:
-          anyOf:
-          - type: string
-          - type: 'null'
           description: Categoria di prodotti (opzionale)
+          nullable: true
           title: Product Category
+          type: string
       responses:
         '200':
           content:
@@ -1462,21 +1454,19 @@ paths:
         name: syncId
         required: false
         schema:
-          anyOf:
-          - type: string
-          - type: 'null'
           description: ID della sincronizzazione (opzionale)
+          nullable: true
           title: Syncid
+          type: string
       - description: Filtra per stato (in corso, completato, fallito)
         in: query
         name: status
         required: false
         schema:
-          anyOf:
-          - type: string
-          - type: 'null'
           description: Filtra per stato (in corso, completato, fallito)
+          nullable: true
           title: Status
+          type: string
       responses:
         '200':
           content:
@@ -1732,21 +1722,19 @@ paths:
         name: product_category
         required: false
         schema:
-          anyOf:
-          - type: string
-          - type: 'null'
           description: Categoria di prodotti (opzionale)
+          nullable: true
           title: Product Category
+          type: string
       - description: ID del negozio (opzionale)
         in: query
         name: store_id
         required: false
         schema:
-          anyOf:
-          - type: string
-          - type: 'null'
           description: ID del negozio (opzionale)
+          nullable: true
           title: Store Id
+          type: string
       responses:
         '200':
           content:
@@ -1803,11 +1791,10 @@ paths:
         name: transaction_type
         required: false
         schema:
-          anyOf:
-          - type: string
-          - type: 'null'
           description: Tipo di transazione (vendita, reso, ecc.)
+          nullable: true
           title: Transaction Type
+          type: string
       responses:
         '200':
           content:
