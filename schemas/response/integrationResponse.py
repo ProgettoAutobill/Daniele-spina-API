@@ -12,3 +12,17 @@ class IntegrationCorrelationResponse(BaseModel):
     results: List[IntegrationCorrelationResult] = Field(..., alias="results")
     totalPairs: int = Field(..., alias="totalPairs")
     message: str
+
+
+class IntegrationInventoryImpactEntry(BaseModel):
+    category: str
+    stockValue: float
+    cashFlowImpact: float
+
+
+class IntegrationInventoryImpactResponse(BaseModel):
+    timeframe: int
+    totalStockValue: float
+    totalCashFlowImpact: float
+    details: List[IntegrationInventoryImpactEntry]
+    message: str
