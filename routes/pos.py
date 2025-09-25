@@ -3,9 +3,10 @@ from fastapi import APIRouter, Query
 from starlette import status
 
 from metadata.apiDocs import api_docs
-from metadata.posDocs import pos_connect_params, pos_connect_desc, pos_connect_response
+from metadata.posDocs import pos_connect_params, pos_connect_desc, pos_connect_response, pos_transactions_desc, \
+    pos_transactions_params, pos_transactions_response
 from schemas.request.posRequest import PosConnectRequest
-from schemas.response.posResponse import PosConnectResponse
+from schemas.response.posResponse import PosConnectResponse, PosTransactionImportResponse, PosTransactionRecord
 
 router = APIRouter(
     prefix="/pos",
@@ -35,5 +36,43 @@ async def connect_pos(request: PosConnectRequest):
             message=f"POS type {request.posType} non supportato.",
             authToken=None
         )
+    return response
+
+
+@router.get(
+    "/transactions",
+    response_model=PosTransactionImportResponse,
+    status_code=status.HTTP_200_OK,
+    ** api_docs(pos_transactions_desc, pos_transactions_params, pos_transactions_response)
+)
+async def import_transactions(
+        start_date: str = Query(..., description="Data di inizio periodo"),
+        end_date: str = Query(..., description="Data di fine periodo"),
+        transaction_type: Optional[str] = Query(None, description="Tipo di transazione (vendita, reso, ecc.)")
+):
+    # Dati mockati
+    mock_transactions = [
+        PosTransactionRecord(transactionId="T001", date=start_date, transactionType="vendita", amount=100.0,
+                          storeId="STORE001"),
+        PosTransactionRecord(transactionId="T002", date=start_date, transactionType="vendita", amount=50.0,
+                          storeId="STORE001"),
+        PosTransactionRecord(transactionId="T003", date=start_date, transactionType="reso", amount=-20.0,
+                          storeId="STORE002")
+    ]
+
+    # Filtra per tipo di transazione se specificato
+    filtered_transactions = [
+        tx for tx in mock_transactions
+        if transaction_type is None or tx.transactionType == transaction_type
+    ]
+
+    total_amount = sum(tx.amount for tx in filtered_transactions)
+
+    response = PosTransactionImportResponse(
+        importedTransactions=filtered_transactions,
+        totalTransactions=len(filtered_transactions),
+        totalAmount=total_amount,
+        message=f"Importate {len(filtered_transactions)} transazioni dal {start_date} al {end_date}."
+    )
     return response
 
