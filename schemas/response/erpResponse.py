@@ -51,3 +51,19 @@ class ErpSyncResponse(BaseModel):
 class ErpMappingResponse(BaseModel):
     status: str
     message: str
+
+
+class ErpEntityRecord(BaseModel):
+    entityId: str
+    name: str
+    entityType: str
+    status: str
+    outstandingPayments: float
+
+
+class ErpEntityImportResponse(BaseModel):
+    importedRecords: List[ErpEntityRecord] = Field(..., alias="importedRecords")
+    totalRecords: int = Field(..., alias="totalRecords")
+    totalOutstanding: float = Field(..., alias="totalOutstanding")
+    message: str
+

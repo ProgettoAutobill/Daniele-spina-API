@@ -7,11 +7,12 @@ from metadata.apiDocs import api_docs
 from metadata.erpDocs import erp_connect_desc, erp_connect_params, erp_connect_response, erp_accounting_desc, \
     erp_accounting_params, erp_accounting_response, erp_import_inventory_desc, erp_import_inventory_params, \
     erp_import_inventory_response, erp_sync_desc, erp_sync_params, erp_sync_response, erp_mapping_desc, \
-    erp_mapping_params, erp_mapping_response
+    erp_mapping_params, erp_mapping_response, erp_import_entities_desc, erp_import_entities_params, \
+    erp_import_entities_response
 from schemas.request.erpRequest import ErpConnectRequest, ErpSyncRequest, ErpMappingRequest
 from schemas.response.erpResponse import ErpConnectResponse, ErpAccountingImportResponse, \
     ErpAccountingRecord, ErpInventoryImportResponse, ErpInventoryRecord, ErpSyncResponse, ErpModuleSyncResult, \
-    ErpMappingResponse
+    ErpMappingResponse, ErpEntityImportResponse, ErpEntityRecord
 
 router = APIRouter(
     prefix="/erp",
@@ -132,7 +133,7 @@ async def sync_data(request: ErpSyncRequest):
 
 
 @router.put(
-    "/api/erp/mapping",
+    "/mapping",
     response_model=ErpMappingResponse,
     status_code=status.HTTP_200_OK,
     **api_docs(erp_mapping_desc, erp_mapping_params, erp_mapping_response)
@@ -149,4 +150,43 @@ async def configure_mapping(request: ErpMappingRequest):
             status="failure",
             message=f"Nessuna mappatura fornita per {request.entityType} su {request.erpType}."
         )
+    return response
+
+
+@router.get(
+    "/import/entities",
+    response_model=ErpEntityImportResponse,
+    status_code=status.HTTP_200_OK,
+    **api_docs(erp_import_entities_desc, erp_import_entities_params, erp_import_entities_response)
+)
+async def import_entities(
+        entity_type: str = Query(..., description="Tipo di entità (cliente, fornitore)", alias="entityType"),
+        status: Optional[str] = Query(None, description="Stato (attivo, inattivo)")
+):
+    # Dati mockati
+    mock_entities = [
+        ErpEntityRecord(entityId="C001", name="Mario Rossi", entityType="cliente", status="attivo",
+                     outstandingPayments=500.0),
+        ErpEntityRecord(entityId="C002", name="Luca Bianchi", entityType="cliente", status="inattivo",
+                     outstandingPayments=0.0),
+        ErpEntityRecord(entityId="F001", name="Fornitore XYZ", entityType="fornitore", status="attivo",
+                     outstandingPayments=1200.0),
+        ErpEntityRecord(entityId="F002", name="Fornitore ABC", entityType="fornitore", status="inattivo",
+                     outstandingPayments=0.0)
+    ]
+
+    # Filtra in base ai parametri
+    filtered_entities = [
+        entity for entity in mock_entities
+        if entity.entityType == entity_type and (status is None or entity.status == status)
+    ]
+
+    total_outstanding = sum(entity.outstandingPayments for entity in filtered_entities)
+
+    response = ErpEntityImportResponse(
+        importedRecords=filtered_entities,
+        totalRecords=len(filtered_entities),
+        totalOutstanding=total_outstanding,
+        message=f"Importati {len(filtered_entities)} record di tipo {entity_type}."
+    )
     return response
