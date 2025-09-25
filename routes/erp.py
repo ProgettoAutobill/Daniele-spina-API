@@ -6,10 +6,12 @@ from starlette import status
 from metadata.apiDocs import api_docs
 from metadata.erpDocs import erp_connect_desc, erp_connect_params, erp_connect_response, erp_accounting_desc, \
     erp_accounting_params, erp_accounting_response, erp_import_inventory_desc, erp_import_inventory_params, \
-    erp_import_inventory_response, erp_sync_desc, erp_sync_params, erp_sync_response
-from schemas.request.erpRequest import ErpConnectRequest, ErpSyncRequest
+    erp_import_inventory_response, erp_sync_desc, erp_sync_params, erp_sync_response, erp_mapping_desc, \
+    erp_mapping_params, erp_mapping_response
+from schemas.request.erpRequest import ErpConnectRequest, ErpSyncRequest, ErpMappingRequest
 from schemas.response.erpResponse import ErpConnectResponse, ErpAccountingImportResponse, \
-    ErpAccountingRecord, ErpInventoryImportResponse, ErpInventoryRecord, ErpSyncResponse, ErpModuleSyncResult
+    ErpAccountingRecord, ErpInventoryImportResponse, ErpInventoryRecord, ErpSyncResponse, ErpModuleSyncResult, \
+    ErpMappingResponse
 
 router = APIRouter(
     prefix="/erp",
@@ -128,3 +130,23 @@ async def sync_data(request: ErpSyncRequest):
     )
     return response
 
+
+@router.put(
+    "/api/erp/mapping",
+    response_model=ErpMappingResponse,
+    status_code=status.HTTP_200_OK,
+    **api_docs(erp_mapping_desc, erp_mapping_params, erp_mapping_response)
+)
+async def configure_mapping(request: ErpMappingRequest):
+    # Dati mockati
+    if request.fieldMappings:
+        response = ErpMappingResponse(
+            status="success",
+            message=f"Mappatura per {request.entityType} su {request.erpType} configurata con successo."
+        )
+    else:
+        response = ErpMappingResponse(
+            status="failure",
+            message=f"Nessuna mappatura fornita per {request.entityType} su {request.erpType}."
+        )
+    return response

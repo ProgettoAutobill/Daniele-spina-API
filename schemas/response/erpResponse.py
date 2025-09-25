@@ -47,3 +47,7 @@ class ErpSyncResponse(BaseModel):
     totalModules: int = Field(..., alias="totalModules")
     message: str
 
+
+class ErpMappingResponse(BaseModel):
+    status: str
+    message: str

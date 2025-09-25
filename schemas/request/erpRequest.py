@@ -11,3 +11,9 @@ class ErpConnectRequest(BaseModel):
 class ErpSyncRequest(BaseModel):
     syncDirection: str
     dataModules: List[str]
+
+
+class ErpMappingRequest(BaseModel):
+    erpType: str
+    entityType: str
+    fieldMappings: Dict[str, str]
