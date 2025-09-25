@@ -8,7 +8,7 @@ class ErpConnectResponse(BaseModel):
     authToken: str = None
 
 
-class AccountingRecord(BaseModel):
+class ErpAccountingRecord(BaseModel):
     id: str
     amount: float
     date: str
@@ -16,7 +16,21 @@ class AccountingRecord(BaseModel):
 
 
 class ErpAccountingImportResponse(BaseModel):
-    importedRecords: List[AccountingRecord] = Field(..., alias="importedRecords")
+    importedRecords: List[ErpAccountingRecord] = Field(..., alias="importedRecords")
     totalRecords: int = Field(..., alias="totalRecords")
     totalAmount: float = Field(..., alias="totalAmount")
+    message: str
+
+
+class ErpInventoryRecord(BaseModel):
+    productId: str
+    name: str
+    category: str
+    warehouseId: str
+    quantity: int
+
+
+class ErpInventoryImportResponse(BaseModel):
+    importedRecords: List[ErpInventoryRecord] = Field(..., alias="importedRecords")
+    totalRecords: int = Field(..., alias="totalRecords")
     message: str
