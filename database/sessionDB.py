@@ -1,30 +1,36 @@
+from sqlalchemy import create_engine, inspect , text
+from sqlalchemy.orm import sessionmaker, Session
+from models import AuthLog, AuthorizedScript, AuthToken, Base, BusinessCost, BusinessRevenue, Client, CounterDepartment, Employee, EmployeeContract, FinancialCategory, Location, LoyaltyCard, Product, Provider, Role, StockMovement, StockMovementItem, SupermarketDepartment, User, UserPermission
 
-from sqlalchemy import create_engine, text, MetaData
-from sqlalchemy.orm import sessionmaker
-import os
-from models import AccessLog,AdministrativeExpense,Authentication,Base,BaseProduct,BusinessEntity,Card,CashFlowEntry,ClickCollectRevenue,Client,Collaborator,CollaboratorContract,Employee,EmployeeContract,Expense,FacilityExpense,Finance,FinanceExpense,GoodsTransaction,GoodsTransactionProduct,GroceryProduct,Location,Lot,MarketingExpense,NonGroceryProduct,OnlineRevenue,Order,OtherExpense,OtherRevenue,Product,Provider,PurchaseExpense,ReturnExpense,Revenue,Role,SaleRevenue,ScaleProduct,ServiceRevenue,SingleProduct,StaffExpense,Stakeholder,StateEntity,Supplier,TaxExpense,TaxModel,UserBase,UtilityExpense
+DATABASE_URL = "sqlite:///./dbsmartapi.db"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-DATABASE_URL = f"postgresql://{os.getenv('DB_USER', 'admin')}:{os.getenv('DB_PASSWORD', 'password123')}@{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '5432')}/{os.getenv('DB_NAME', 'sistema_gestionale')}"
 
-try:
-    engine = create_engine(DATABASE_URL, echo=True)
-    SessionLocal = sessionmaker(bind=engine)
-    print("Connecting to PostgreSQL database in Docker...")
-    # Test connessione
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT version()"))
-        print(f"Connected successfully! PostgreSQL version: {result.fetchone()[0]}")
-    print("\nCreating all tables...")
-    Base.metadata.create_all(bind=engine)
-    metadata = MetaData()
-    metadata.reflect(bind=engine)
-    print(f"\nDatabase '{DATABASE_URL.split('/')[-1]}' created successfully!")
-    print(f"Total tables created: {len(metadata.tables)}")
-    for table_name in sorted(metadata.tables.keys()):
-        table = metadata.tables[table_name]
-        print(f"  • {table_name} ({len(table.columns)} columns)")
-    print("\nDatabase is ready for use!")
-    print(f"Connection string: {DATABASE_URL}")
+def get_db() -> Session:
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-except Exception as e:
-    print(f"Error creating database: {e}")
+
+def test_db_connection():
+    try:
+        with engine.connect() as conn:
+            version = conn.execute(text("SELECT sqlite_version()")).fetchone()[0]
+            print(f"Connected! SQLite version: {version}")
+
+        inspector = inspect(engine)
+        print(f"\nTables in dbsmartapi:")
+        for table_name in inspector.get_table_names():
+            print(f"  • {table_name}")
+
+    except Exception as e:
+        print(f"Database connection error: {e}")
+
+
+if __name__ == "__main__":
+    #init_db()
+    test_db_connection()
+

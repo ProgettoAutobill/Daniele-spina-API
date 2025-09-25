@@ -14,26 +14,16 @@ git clone <repository-url>
 cd module
 ```
 
-### 2. Setup database e ambiente virtuale
-Su Linux/macOS (nel percorso del progetto):
-```bash
-chmod +x setup_database.sh
-./setup_database.sh
-```
 
 Su Windows (non testato):
 ```bash
-# Avvia PostgreSQL
-docker-compose up -d postgres
+
 
 # Crea ambiente virtuale
 python -m venv venv
 venv\Scripts\activate  # Windows
 
 pip install -r requirements.txt
-
-# Crea tabelle database
-python python -m database.sessionDB
 ```
 
 ### 3. Avvia il server

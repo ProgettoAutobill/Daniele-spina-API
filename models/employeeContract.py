@@ -1,104 +1,38 @@
-from models.base import Base
-from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Integer, String, DECIMAL, Date, Boolean, DateTime, ForeignKey, CheckConstraint, func, Index
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from .base import Base
 
 
 class EmployeeContract(Base):
-    """
-    Stores employee contracts (one-to-many: one employee, many contracts over time).
-    Table: employee_contract
+    __tablename__ = "employee_contracts"
 
-    Columns:
-        id (String, PK): Primary key for the contract
-        employee_id (String, FK): FK to employee
-        contract_type (String): Type of contract (e.g., permanent, temporary, internship)
-        qualification (String): Professional qualification or level
-        salary (Float): Base salary or compensation
-        start_date (Date): Contract start date
-        end_date (Date): Contract end date (if applicable)
-        period_of_probe (Integer): Probation period in days (if applicable)
-        income_tax_rate (Float): Income tax rate (%) applied to gross salary
-        social_security_rate (Float): Social security contribution rate (%) applied to gross salary
-        pension_fund_rate (Float): Pension fund contribution rate (%) applied to gross salary
-        other_withholding_rate (Float): Other withholdings rate (%) applied to gross salary (e.g., union, welfare, etc.)
-        notes (String): Additional notes or comments about the contract
-        employee (relationship): Relationship to Employee
-    Relationships:
-        employee (relationship): Relationship to Employee, back_populates 'contracts'.
-    """
-    __tablename__ = 'employee_contract'
-    id = Column(
-        String(64),
-        primary_key = True
-    )
-    employee_id = Column(
-        String(64),
-        ForeignKey(
-            'employee.id',
-            ondelete = 'SET NULL'
-        ),
-        nullable = False,
-        doc = "FK to employee"
-    )
-    contract_type = Column(
-        String(32),
-        nullable = True,
-        doc = "Type of contract (e.g., permanent, temporary, internship)"
-    )
-    qualification = Column(
-        String(64),
-        nullable = True,
-        doc = "Professional qualification or level"
-    )
-    salary = Column(
-        Float,
-        nullable = True,
-        doc = "Base salary or compensation"
-    )
-    start_date = Column(
-        Date,
-        nullable = True,
-        doc = "Contract start date"
-    )
-    end_date = Column(
-        Date,
-        nullable = True,
-        doc = "Contract end date (if applicable)"
-    )
-    period_of_probe = Column(
-        Integer,
-        nullable = True,
-        doc = "Probation period in days (if applicable)"
-    )
-    income_tax_rate = Column(
-        Float,
-        nullable = True,
-        doc = "Income tax rate (%) applied to gross salary"
-    )
-    social_security_rate = Column(
-        Float,
-        nullable = True,
-        doc = "Social security contribution rate (%) applied to gross salary"
-    )
-    pension_fund_rate = Column(
-        Float,
-        nullable = True,
-        doc = "Pension fund contribution rate (%) applied to gross salary"
-    )
-    other_withholding_rate = Column(
-        Float,
-        nullable = True,
-        doc = "Other withholdings rate (%) applied to gross salary (e.g., union, welfare, etc.)"
-    )
-    notes = Column(
-        String(255),
-        nullable = True,
-        doc = "Additional notes or comments about the contract"
-    )
-    employee = relationship(
-        'Employee',
-        back_populates = 'contracts',
-        foreign_keys = ['EmployeeContract.employee_id'],
-        uselist = False,
-        doc = "Relationship to Employee (one-to-one)"
-    )
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    employee_id: Mapped[int] = mapped_column(ForeignKey("employees.id"), unique=True, nullable=False)
+    contract_number: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    contract_type: Mapped[str] = mapped_column(String(20), nullable=False)
+    contract_start_date: Mapped[Date] = mapped_column(Date, nullable=False)
+    contract_end_date: Mapped[Date] = mapped_column(Date, nullable=True)
+    job_title: Mapped[str] = mapped_column(String(100), nullable=True)
+    weekly_hours: Mapped[int] = mapped_column(Integer, default=40)
+    hourly_rate: Mapped[DECIMAL] = mapped_column(DECIMAL(8,2), nullable=True)
+    monthly_salary: Mapped[DECIMAL] = mapped_column(DECIMAL(10,2), nullable=True)
+    annual_salary: Mapped[DECIMAL] = mapped_column(DECIMAL(10,2), nullable=True)
+    trial_period_days: Mapped[int] = mapped_column(Integer, default=90)
+    notice_period_days: Mapped[int] = mapped_column(Integer, default=30)
+    benefits: Mapped[str] = mapped_column(String(1000), default="")
+    notes: Mapped[str] = mapped_column(String(1000), default="")
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    contract_signed_date: Mapped[Date] = mapped_column(Date, nullable=True)
+    contract_renewed_date: Mapped[Date] = mapped_column(Date, nullable=True)
+    created_at: Mapped[DateTime] = mapped_column(DateTime, server_default=func.current_timestamp())
+    updated_at: Mapped[DateTime] = mapped_column(DateTime, server_default=func.current_timestamp())
+
+    employee: Mapped["Employee"] = relationship("Employee", back_populates="contract")
+
+    def __repr__(self) -> str:
+        return f"<EmployeeContract(number='{self.contract_number}')>"
+
+
+Index("idx_employee_contracts_employee_id", EmployeeContract.employee_id)
+Index("idx_employee_contracts_number", EmployeeContract.contract_number)
+Index("idx_contracts_type_active", EmployeeContract.contract_type, EmployeeContract.is_active)

@@ -1,45 +1,20 @@
-from models.base import Base
-from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Integer, String, Index
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from .base import Base
 
 
 class Role(Base):
-    """
-    Stores employee roles or job functions. Each role can be assigned to one or more employees.
-    Table: role
+    __tablename__ = "roles"
 
-    Columns:
-        id (String): Unique identifier for the role (PK).
-        name (String): Name of the role or job function (unique).
-        level (String): Level or seniority of the role (e.g., junior, mid, senior).
-        description (String): Description or notes about the role.
-    Relationships:
-        user (relationship): Relationship to UserBase, back_populates 'role'.
-    """
-    __tablename__ = 'role'
-    id = Column(
-        String(64),
-        primary_key = True
-    )
-    name = Column(
-        String(64),
-        nullable = False,
-        unique = True,
-        doc = "Name of the role or job function"
-    )
-    level = Column(
-        String(32),
-        nullable = True,
-        doc = "Level or seniority of the role (e.g., junior, mid, senior)"
-    )
-    description = Column(
-        String(255),
-        nullable = True,
-        doc = "Description or notes about the role"
-    )
-    user = relationship(
-        'UserBase',
-        back_populates = 'role',
-        passive_deletes = True,
-        doc = "Reference to the user associated with this role"
-    )
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    role_name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    role_description: Mapped[str] = mapped_column(String(255), default="")
+    role_level: Mapped[int] = mapped_column(Integer, default=0)
+
+    users: Mapped[list["User"]] = relationship("User", back_populates="role")
+
+    def __repr__(self) -> str:
+        return f"<Role(name='{self.role_name}', level={self.role_level})>"
+
+
+Index("idx_roles_level", Role.role_level)
