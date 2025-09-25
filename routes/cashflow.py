@@ -6,8 +6,11 @@ from starlette import status
 
 from metadata.apiDocs import api_docs
 from metadata.cashflowdocs import cashflow_crunch_detection_desc, cashflow_crunch_detection_params, \
-    cashflow_crunch_detection_response
-from schemas.response.cashflowResponse import CrunchDetectionResponse, CrunchDetectionLiquidityCrisis
+    cashflow_crunch_detection_response, cashflow_accounting_data_desc, cashflow_accounting_data_params, \
+    cashflow_accounting_data_response
+from schemas.request.cashflowRequest import AccountingDataRequest
+from schemas.response.cashflowResponse import CrunchDetectionResponse, CrunchDetectionLiquidityCrisis, \
+    AccountingDataResponse
 
 router = APIRouter(
     prefix="/cashflow",
@@ -47,3 +50,22 @@ async def get_crunch_detection(
         confidence_threshold=confidence_threshold,
         crises=crises
     )
+
+
+@router.post(
+    "/accountingDdata",
+    response_model=AccountingDataResponse,
+    status_code=status.HTTP_200_OK,
+    **api_docs(cashflow_accounting_data_desc, cashflow_accounting_data_params, cashflow_accounting_data_response)
+)
+async def update_accounting_data(accountingDataRequest: AccountingDataRequest):
+    updated_count = len(accountingDataRequest.data)
+    total_amount = sum(item.amount for item in accountingDataRequest.data)
+
+    response = AccountingDataResponse(
+        updatedCount=updated_count,
+        totalAmount=total_amount,
+        message=f"Aggiornati {updated_count} record di tipo {accountingDataRequest.dataType}."
+    )
+    return response
+

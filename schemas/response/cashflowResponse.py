@@ -13,3 +13,8 @@ class CrunchDetectionResponse(BaseModel):
     confidence_threshold: float
     crises: List[CrunchDetectionLiquidityCrisis]
 
+
+class AccountingDataResponse(BaseModel):
+    updatedCount: int
+    totalAmount: float
+    message: str
