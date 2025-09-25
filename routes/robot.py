@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 from starlette import status
-from metadata.api_docs import api_docs
-from metadata.robot_docs import robot_control_params, robot_control_response, robot_control_desc, robot_images_desc, \
+from metadata.apiDocs import api_docs
+from metadata.robotDocs import robot_control_params, robot_control_response, robot_control_desc, robot_images_desc, \
     robot_images_params, robot_images_response, robot_recognition_desc, robot_status_desc, robot_schedule_desc, \
     robot_recognition_response, robot_status_response, robot_schedule_response, robot_recognition_params, \
     robot_status_params, robot_schedule_params
@@ -33,8 +33,7 @@ async def control(command: RobotControlRequest):
     **api_docs(robot_images_desc, robot_images_params, robot_images_response)
 )
 async def images(image: RobotImageRequest):
-    return {"image_id": "1", "status": "ok"}
-
+    return {"imageId": "1", "status": "ok"}
 
 
 @router.post(
@@ -51,8 +50,8 @@ async def recognition(recognition: RobotRecognitionRequest):
     ]
 
     return RobotRecognizedResponse(
-        image_id=recognition.image_id,
-        recognized_products=mock_products
+        imageId=recognition.imageId,
+        recognizedProducts=mock_products
     )
 
 
@@ -62,8 +61,8 @@ async def recognition(recognition: RobotRecognitionRequest):
     status_code=status.HTTP_200_OK,
     **api_docs(robot_status_desc, robot_status_params, robot_status_response)
 )
-async def get_status(details_level: str = Query(...)):
-    return {"robot_status": "status 1", "position": "3", "battery_level": 0.75, "current_activity": "current" }
+async def get_status(details_level: str = Query(..., alias="detailsLevel")):
+    return {"robotStatus": "status 1", "position": "3", "batteryLevel": 0.75, "currentActivity": "current"}
 
 
 @router.put(
@@ -74,13 +73,12 @@ async def get_status(details_level: str = Query(...)):
 )
 async def schedule(schedule: RobotScheduleRequest):
     mock_schedule_list = [
-        RobotScheduleScan(zone_id=1, start_time="2025-09-23T10:00:00Z", priority="alta"),
-        RobotScheduleScan(zone_id=2, start_time="2025-09-23T14:00:00Z", priority="media"),
-        RobotScheduleScan(zone_id=3, start_time="2025-09-24T09:00:00Z", priority="bassa")
+        RobotScheduleScan(zoneId=1, startTime="2025-09-23T10:00:00Z", priority="alta"),
+        RobotScheduleScan(zoneId=2, startTime="2025-09-23T14:00:00Z", priority="media"),
+        RobotScheduleScan(zoneId=3, startTime="2025-09-24T09:00:00Z", priority="bassa")
     ]
 
     return RobotScheduleResponse(
         message="schedulazione avvenuta con successo",
-        scheduled_scans=mock_schedule_list
+        scheduledScans=mock_schedule_list
     )
-

@@ -8,29 +8,29 @@ robot_schedule_desc = "Configura la pianificazione delle scansioni automatiche"
 # parameters API
 robot_control_params = {
     "command": "Tipo di comando (start_scan, stop_scan, return_to_base)",
-    "zone_id": "ID della zona da scansionare",
+    "zoneId": "ID della zona da scansionare",
     "priority": "Priorità del comando (alta, media, bassa)"
 }
 
 robot_images_params = {
-    "image_data": "Dati dell'immagine (base64 o URL)",
+    "imageData": "Dati dell'immagine (base64 o URL)",
     "timestamp": "Data e ora dell'acquisizione",
     "location": "Posizione del robot al momento dell'acquisizione",
     "metadata": "Metadati aggiuntivi (risoluzione, formato, ecc.)"
 }
 
 robot_recognition_params = {
-    "image_id": "ID dell'immagine da elaborare",
-    "recognition_mode": "Modalità di riconoscimento (rapida, accurata)"
+    "imageId": "ID dell'immagine da elaborare",
+    "recognitionMode": "Modalità di riconoscimento (rapida, accurata)"
 }
 
 robot_status_params = {
-    "details_level": "Livello di dettaglio (base, completo)"
+    "detailsLevel": "Livello di dettaglio (base, completo)"
 }
 
 robot_schedule_params = {
     "schedule": "Array di oggetti con orari e zone da scansionare",
-    "priority_zones": "Zone con priorità di scansione più alta"
+    "priorityZones": "Zone con priorità di scansione più alta"
 }
 
 # response API

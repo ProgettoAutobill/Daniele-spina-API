@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Literal, Optional, Dict, List
+from typing import List
 
 
 class RobotControlResponse(BaseModel):
@@ -8,7 +8,7 @@ class RobotControlResponse(BaseModel):
 
 
 class RobotImageResponse(BaseModel):
-    image_id: str
+    imageId: str
     status: str
 
 
@@ -19,23 +19,23 @@ class RobotRecognizedProduct(BaseModel):
 
 
 class RobotRecognizedResponse(BaseModel):
-    image_id: str
-    recognized_products: List[RobotRecognizedProduct]
+    imageId: str
+    recognizedProducts: List[RobotRecognizedProduct]
 
 
 class RobotStatusResponse(BaseModel):
-    robot_status: str
+    robotStatus: str
     position: str
-    battery_level: float
-    current_activity: str
+    batteryLevel: float
+    currentActivity: str
 
 
 class RobotScheduleScan(BaseModel):
-    zone_id: int
-    start_time: str
+    zoneId: int
+    startTime: str
     priority: str
 
 
 class RobotScheduleResponse(BaseModel):
     message: str
-    scheduled_scans: List[RobotScheduleScan]
+    scheduledScans: List[RobotScheduleScan]
