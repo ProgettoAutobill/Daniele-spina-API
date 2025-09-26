@@ -1,0 +1,1 @@
+# TODO: here go the service methods for pos (business logic)
