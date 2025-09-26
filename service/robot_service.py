@@ -1,1 +1,0 @@
-# TODO: here go the service methods for robots (business logic)
